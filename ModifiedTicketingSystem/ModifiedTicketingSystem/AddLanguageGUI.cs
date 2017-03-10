@@ -32,7 +32,6 @@ namespace ModifiedTicketingSystem {
                 count++;
                 if (languageTemp.Length == count) {
                     File.WriteAllLines(path + newLang[0] + ".language", newLang);
-                    DialogResult = DialogResult.OK;
                     Close();
                 }
                 lblTranslateText.Text = languageTemp[count];

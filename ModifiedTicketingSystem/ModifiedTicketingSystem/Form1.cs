@@ -106,7 +106,7 @@ namespace ModifiedTicketingSystem {
 
         private void btnLanguageAdd_KeyDown(object sender, KeyEventArgs e) {
             var languagegui = new AddLanguageGUI();
-            languagegui.ShowDialog();
+            languagegui.Show();
         }
     }
 }
