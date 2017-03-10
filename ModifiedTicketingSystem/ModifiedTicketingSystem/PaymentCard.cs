@@ -34,5 +34,13 @@ namespace ModifiedTicketingSystem
         public string GetLastFourDigits() {
             return "**** **** **** "+_cardNumber.Substring(_cardNumber.Length-4);
         }
+
+        /// <summary>
+        /// Overwritten for testing purposes.
+        /// </summary>
+        /// <returns>string concatination of object properties</returns>
+        public override string ToString() {
+            return _cardHolderName + _cardNumber + _expiryDate.ToString();
+        }
     }
 }

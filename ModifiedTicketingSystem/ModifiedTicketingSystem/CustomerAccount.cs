@@ -108,6 +108,8 @@ namespace ModifiedTicketingSystem {
                             return (T)Convert.ChangeType(account._username, typeof(T));
                         case "paymentoptions":
                             return (T) Convert.ChangeType(account.GetSavedPaymentDigits(), typeof(T));
+                        case "savedpaymentmethods":
+                            return (T)Convert.ChangeType(_savedPaymentMethods, typeof(T));
                     }
                 }
             }

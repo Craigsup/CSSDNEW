@@ -78,7 +78,10 @@ namespace ModifiedTicketingSystem {
         }
 
         public AdminAccount GetAdminAccountById(int x) {
-            LoadAdminData();
+            if (!_listOfAdminAccounts.Any()) {
+                LoadAdminData();
+            }
+
             return _listOfAdminAccounts.Where(y => y.GetId() == x).First();
         }
 
