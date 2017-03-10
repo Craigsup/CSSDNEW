@@ -70,7 +70,7 @@ namespace ModifiedTicketingSystem {
             this.btnLanguageAdd.TabIndex = 3;
             this.btnLanguageAdd.Text = "New Language GUI";
             this.btnLanguageAdd.UseVisualStyleBackColor = true;
-            this.btnLanguageAdd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnLanguageAdd_KeyDown);
+            this.btnLanguageAdd.Click += new System.EventHandler(this.btnLanguageAdd_Click);
             // 
             // Form1
             // 

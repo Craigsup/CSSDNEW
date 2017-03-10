@@ -14,7 +14,8 @@ namespace ModifiedTicketingSystem {
         int count = 0;
         string[] languageTemp = new string[20];
         string path = Path.Combine(Environment.CurrentDirectory, @"Languages\");
-        List<string> newLang = new List<string>();
+        string[] newLang = new string[20];
+
         public AddLanguageGUI() {
             InitializeComponent();
 
@@ -22,22 +23,19 @@ namespace ModifiedTicketingSystem {
 
             languageTemp = File.ReadAllLines(files[0]);
             lblTranslateText.Text = "Name of Language";
-
-
         }
 
         private void tbTranslateText_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyData == Keys.Enter) {
-                newLang.Add(tbTranslateText.Text);
+                newLang[count] = tbTranslateText.Text;
                 count++;
                 if (languageTemp.Length == count) {
                     File.WriteAllLines(path + newLang[0] + ".language", newLang);
                     Close();
+                } else {
+                    lblTranslateText.Text = languageTemp[count];
+                    tbTranslateText.Clear();
                 }
-                lblTranslateText.Text = languageTemp[count];
-                tbTranslateText.Clear();
-
-                
             }
         }
     }
