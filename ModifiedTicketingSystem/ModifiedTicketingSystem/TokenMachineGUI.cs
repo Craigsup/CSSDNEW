@@ -15,7 +15,7 @@ namespace ModifiedTicketingSystem {
         private TokenMachine _machine;
         private Language _lang;
         private LanguageList _langList;
-        //private string[] stations = new string[2533];
+        private string[] stations = new string[2533];
         private int _account;
         private Stack<string> _actionStack = new Stack<string>();
         private List<int> nudAcceptedValues = new List<int> { 1, 3, 5, 7, 10, 28 };
@@ -23,6 +23,7 @@ namespace ModifiedTicketingSystem {
         private int selection;
         private Counter counter;
         private Random rand = new Random();
+        string selectedStartStation, selectedEndStation;
 
 
         /// <summary>
@@ -34,19 +35,21 @@ namespace ModifiedTicketingSystem {
             //SetupFile();
             dayPassPrice = decimal.Round((decimal)rand.NextDouble(), 2) * 10;
             _machine = new TokenMachine(dayPassPrice);
-            var hold = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
-            cbStartStation.DataSource = hold;
-            //stations = File.ReadAllLines(@"Stations.txt");
-            //cbStartStation.DataSource = stations;
+            //var hold = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            //cbStartStation.DataSource = hold;
+            //cbStartStation.Text = "location";
+            stations = File.ReadAllLines(@"UK_TrainStations.txt");
+            cbStartStation.DataSource = stations;
             cbEndStation.BindingContext = new BindingContext();
-            cbEndStation.DataSource = cbStartStation.DataSource;
+            cbEndStation.DataSource = stations;
+            //cbEndStation.DataSource = cbStartStation.DataSource;
 
             SetupLanguages();
             DisplayLangList();
             counter = _counter;
         }
 
-       
+
 
         public static T ReadFromBinaryFile<T>(string filePath) {
             using (Stream stream = File.Open(filePath, FileMode.Open)) {
@@ -125,6 +128,28 @@ namespace ModifiedTicketingSystem {
 
             // Show Payment Screen
             FinalMessage();
+        }
+
+        private void createTicket() {
+            StationList stationList = new StationList();
+            //for new build
+            //Station startStation = stationList.GetStationByLocation(selectedStartStation.GetLocation());
+            //Station endStation = stationList.GetStationByLocation(selectedEndStation.GetLocation());
+            Station startStation = stationList.GetStationByLocation(selectedStartStation);
+            Station endStation = stationList.GetStationByLocation(selectedEndStation);
+            Route route = new Route(startStation, endStation, Convert.ToDecimal(tbSingleJourneyPrice.Text.Substring(1)));
+            Ticket ticket = new Ticket(route, true, DateTime.Now, null, "single", _account);
+            startStation.AddTicketToList(ticket);
+            endStation.AddTicketToList(ticket);
+            ticket.InitialiseTicketId();
+        }
+
+        private void createTimedTicket() {
+            for (int i = 0; i <= (nudTicketQuantity.Value - 1); i++) {
+                DateTime date = DateTime.Now.AddDays((int)nudTimedPass.Value);
+                Ticket ticket = new Ticket(true, DateTime.Now, "timed", date, _account);
+                ticket.SerialiseTickets();
+            }
         }
 
         private void Login() {
@@ -341,6 +366,12 @@ namespace ModifiedTicketingSystem {
             lblFinalMessage.Visible = true;
             lblFinalMessage.Text = "";
 
+            if (selection == 0) {
+                createTicket();
+            } else {
+                createTimedTicket();
+            }
+
             await Task.Delay(1000);
             if (result == DialogResult.Cancel) {
                 decimal amtPaid = _machine.GetPaidAmount();
@@ -453,6 +484,7 @@ namespace ModifiedTicketingSystem {
                 if (string.Compare(lbPaymentMethods.SelectedItem.ToString(), _lang.GetPaymentOptions()[1], StringComparison.Ordinal) == 0) {
                     // CARD PAYMENT
                     ToggleCardPayment();
+                    //CreateTicket();
                     DisplayFinalMessage();
                 } else if (string.Compare(lbPaymentMethods.SelectedItem.ToString(), _lang.GetPaymentOptions()[2], StringComparison.Ordinal) == 0) {
                     // CASH
@@ -513,16 +545,22 @@ namespace ModifiedTicketingSystem {
 
         private void cbStartStation_SelectedIndexChanged(object sender, EventArgs e) {
             //Update price of ticket
-            if (cbEndStation.SelectedText != null) {
+            if (cbEndStation.SelectedItem != null) {
                 tbSingleJourneyPrice.Text = "£4.00";
             }
+            //for new combobox implementation
+            //selectedStartStation = (Station)cbStartStation.SelectedItem;
+            selectedStartStation = cbStartStation.SelectedItem.ToString();
         }
 
         private void cbEndStation_SelectedIndexChanged(object sender, EventArgs e) {
             //Update price of ticket
-            if (cbStartStation.SelectedText != null) {
+            if (cbStartStation.SelectedItem != null) {
                 tbSingleJourneyPrice.Text = "£5.00";
             }
+            //for new combobox implementation
+            //selectedEndStation = (Station)cbEndStation.SelectedItem;
+            selectedEndStation = cbEndStation.SelectedItem.ToString();
         }
 
         private void tbUsername_KeyDown(object sender, KeyEventArgs e) {
@@ -558,9 +596,28 @@ namespace ModifiedTicketingSystem {
             } else {
                 // Log in is unsuccessful - show error.
                 MessageBox.Show(this, "Error");
+            }
 
+        }
+
+        /// <summary>
+        /// This method takes the List of CustomerAccount object and binary serializes it, allowing the persistence of data.
+        /// </summary>
+        /// <param name="filePath">This is the file name/output directory.</param>
+        /// <param name="objectToWrite">This is the object that gets serialized. Can be of any type.</param>
+        /// <param name="append">This flags whether to append the object to the end of the file (if it exists already)</param>
+        /// <typeparam name="T">This is the type of T</typeparam>
+        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false) {
+            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create)) {
+                var binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(stream, objectToWrite);
             }
         }
+
+        public void Update(int count) {
+            throw new NotImplementedException();
+        }
+
 
         private void ConfigureGuiForLogin() {
             PictureBox userPicture = new PictureBox {
@@ -695,11 +752,6 @@ namespace ModifiedTicketingSystem {
                     ToggleTimedPass(false);
                     nudTimedPass.Focus();
                     break;
-                case "SingleJourney":
-                    HideAll();
-                    ToggleSingleJourney(false);
-                    cbEndStation.Focus();
-                    break;
             }
         }
 
@@ -765,13 +817,10 @@ namespace ModifiedTicketingSystem {
 
         }
 
-        public void Update(int count) {
-
-        }
-
         //public Counter ISubject {
         //    get { return counter; }
         //    set { counter.Increment(); }
         //}
     }
 }
+

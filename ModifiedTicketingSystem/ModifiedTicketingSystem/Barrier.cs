@@ -14,7 +14,7 @@
             _isOpen = false;
         }
 
-        public bool CheckIsOpen() {
+        public bool CheckBarrierStatus() {
             return _isOpen;
         }
     }

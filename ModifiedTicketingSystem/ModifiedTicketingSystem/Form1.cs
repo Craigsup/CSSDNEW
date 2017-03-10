@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace ModifiedTicketingSystem {
     public partial class Form1 : Form {
+        string selectedStartStation, selectedEndStation;
 
         private Counter counter;
         public Form1() {
@@ -48,6 +49,7 @@ namespace ModifiedTicketingSystem {
         private void Setup() {
             CustomerSetup();
             InitialStationLoad();
+            TicketSetup();
             AdminSetup();
         }
 
@@ -104,5 +106,23 @@ namespace ModifiedTicketingSystem {
             }
         }
 
+        public void TicketSetup() {
+            selectedStartStation = "Birmingham";
+            selectedEndStation = "Birmingham";
+
+            Ticket ticket = new Ticket();
+            ticket.InitialiseTicketId();
+            ticket.InitialiseTickets();
+
+            StationList stationList = new StationList();
+            List<Station> listOfStations = stationList.LoadStationData();
+            foreach (var station in listOfStations) {
+                station.InitialiseTicketList(ticket);
+            }
+        }
+
+        private void btnScannerCreator_Click(object sender, EventArgs e) {
+
+        }
     }
 }

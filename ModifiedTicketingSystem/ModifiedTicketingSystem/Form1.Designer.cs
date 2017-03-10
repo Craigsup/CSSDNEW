@@ -28,7 +28,7 @@ namespace ModifiedTicketingSystem {
         private void InitializeComponent() {
             this.btnAddNewGUI = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.btnAdminGUI = new System.Windows.Forms.Button();
+            this.btnScannerCreator = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAddNewGUI
@@ -51,22 +51,22 @@ namespace ModifiedTicketingSystem {
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // btnAdminGUI
+            // btnScannerCreator
             // 
-            this.btnAdminGUI.Location = new System.Drawing.Point(81, 168);
-            this.btnAdminGUI.Name = "btnAdminGUI";
-            this.btnAdminGUI.Size = new System.Drawing.Size(157, 61);
-            this.btnAdminGUI.TabIndex = 2;
-            this.btnAdminGUI.Text = "New Admin GUI";
-            this.btnAdminGUI.UseVisualStyleBackColor = true;
-            this.btnAdminGUI.Click += new System.EventHandler(this.btnAdminGUI_Click);
+            this.btnScannerCreator.Location = new System.Drawing.Point(383, 174);
+            this.btnScannerCreator.Name = "btnScannerCreator";
+            this.btnScannerCreator.Size = new System.Drawing.Size(131, 65);
+            this.btnScannerCreator.TabIndex = 2;
+            this.btnScannerCreator.Text = "Open Scanner Creator";
+            this.btnScannerCreator.UseVisualStyleBackColor = true;
+            this.btnScannerCreator.Click += new System.EventHandler(this.btnScannerCreator_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 312);
-            this.Controls.Add(this.btnAdminGUI);
+            this.Controls.Add(this.btnScannerCreator);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnAddNewGUI);
             this.Name = "Form1";
@@ -80,7 +80,7 @@ namespace ModifiedTicketingSystem {
 
         private Button btnAddNewGUI;
         private Button button1;
-        private Button btnAdminGUI;
+        private Button btnScannerCreator;
     }
 }
 

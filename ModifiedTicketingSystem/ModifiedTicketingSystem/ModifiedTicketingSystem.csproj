@@ -22,7 +22,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\ModifiedTicketingSystem.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,7 +31,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\ModifiedTicketingSystem.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -59,6 +57,12 @@
       <DependentUpon>AdminGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Barrier.cs" />
+    <Compile Include="ScannerFeedbackGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScannerFeedbackGUI.Designer.cs">
+      <DependentUpon>ScannerFeedbackGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="CardReader.cs" />
     <Compile Include="Counter.cs" />
     <Compile Include="CustomerAccount.cs" />
@@ -97,6 +101,12 @@
     <Compile Include="Route.cs" />
     <Compile Include="RouteList.cs" />
     <Compile Include="Scanner.cs" />
+    <Compile Include="ScannerCreatorGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScannerCreatorGUI.Designer.cs">
+      <DependentUpon>ScannerCreatorGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScannerFeedback.cs" />
     <Compile Include="SmartCard.cs" />
     <Compile Include="Station.cs" />
@@ -113,6 +123,9 @@
     <Compile Include="TokenValidator.cs" />
     <EmbeddedResource Include="AdminGUI.resx">
       <DependentUpon>AdminGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScannerFeedbackGUI.resx">
+      <DependentUpon>ScannerFeedbackGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
