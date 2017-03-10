@@ -41,18 +41,18 @@
             this.lblTicketCount = new System.Windows.Forms.Label();
             this.lblTickets = new System.Windows.Forms.Label();
             this.tabRoutes = new System.Windows.Forms.TabPage();
+            this.cbEndStationEntry = new System.Windows.Forms.ComboBox();
+            this.lblStartStationEntry = new System.Windows.Forms.Label();
+            this.tbPriceEntry = new System.Windows.Forms.TextBox();
+            this.btnCreateRoute = new System.Windows.Forms.Button();
+            this.lblPrice = new System.Windows.Forms.Label();
+            this.lblEndStation = new System.Windows.Forms.Label();
+            this.lblStartStation = new System.Windows.Forms.Label();
             this.lbRoutes = new System.Windows.Forms.ListBox();
             this.lblCreateRoute = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cbSelectStation = new System.Windows.Forms.ComboBox();
             this.lblRoutes = new System.Windows.Forms.Label();
-            this.lblStartStation = new System.Windows.Forms.Label();
-            this.lblEndStation = new System.Windows.Forms.Label();
-            this.lblPrice = new System.Windows.Forms.Label();
-            this.btnCreateRoute = new System.Windows.Forms.Button();
-            this.tbPriceEntry = new System.Windows.Forms.TextBox();
-            this.lblStartStationEntry = new System.Windows.Forms.Label();
-            this.cbEndStationEntry = new System.Windows.Forms.ComboBox();
             this.tcAdminViews.SuspendLayout();
             this.tabTickets.SuspendLayout();
             this.tabRoutes.SuspendLayout();
@@ -263,6 +263,69 @@
             this.tabRoutes.Text = "Routes";
             this.tabRoutes.UseVisualStyleBackColor = true;
             // 
+            // cbEndStationEntry
+            // 
+            this.cbEndStationEntry.FormattingEnabled = true;
+            this.cbEndStationEntry.Location = new System.Drawing.Point(410, 201);
+            this.cbEndStationEntry.Name = "cbEndStationEntry";
+            this.cbEndStationEntry.Size = new System.Drawing.Size(113, 21);
+            this.cbEndStationEntry.TabIndex = 14;
+            // 
+            // lblStartStationEntry
+            // 
+            this.lblStartStationEntry.AutoSize = true;
+            this.lblStartStationEntry.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lblStartStationEntry.Location = new System.Drawing.Point(410, 158);
+            this.lblStartStationEntry.Name = "lblStartStationEntry";
+            this.lblStartStationEntry.Size = new System.Drawing.Size(0, 20);
+            this.lblStartStationEntry.TabIndex = 13;
+            // 
+            // tbPriceEntry
+            // 
+            this.tbPriceEntry.Location = new System.Drawing.Point(410, 250);
+            this.tbPriceEntry.Name = "tbPriceEntry";
+            this.tbPriceEntry.Size = new System.Drawing.Size(113, 20);
+            this.tbPriceEntry.TabIndex = 12;
+            // 
+            // btnCreateRoute
+            // 
+            this.btnCreateRoute.Location = new System.Drawing.Point(448, 297);
+            this.btnCreateRoute.Name = "btnCreateRoute";
+            this.btnCreateRoute.Size = new System.Drawing.Size(75, 23);
+            this.btnCreateRoute.TabIndex = 11;
+            this.btnCreateRoute.Text = "Create";
+            this.btnCreateRoute.UseVisualStyleBackColor = true;
+            // 
+            // lblPrice
+            // 
+            this.lblPrice.AutoSize = true;
+            this.lblPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lblPrice.Location = new System.Drawing.Point(292, 250);
+            this.lblPrice.Name = "lblPrice";
+            this.lblPrice.Size = new System.Drawing.Size(48, 20);
+            this.lblPrice.TabIndex = 10;
+            this.lblPrice.Text = "Price:";
+            // 
+            // lblEndStation
+            // 
+            this.lblEndStation.AutoSize = true;
+            this.lblEndStation.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lblEndStation.Location = new System.Drawing.Point(292, 198);
+            this.lblEndStation.Name = "lblEndStation";
+            this.lblEndStation.Size = new System.Drawing.Size(97, 20);
+            this.lblEndStation.TabIndex = 9;
+            this.lblEndStation.Text = "End Station:";
+            // 
+            // lblStartStation
+            // 
+            this.lblStartStation.AutoSize = true;
+            this.lblStartStation.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lblStartStation.Location = new System.Drawing.Point(292, 158);
+            this.lblStartStation.Name = "lblStartStation";
+            this.lblStartStation.Size = new System.Drawing.Size(103, 20);
+            this.lblStartStation.TabIndex = 8;
+            this.lblStartStation.Text = "Start Station:";
+            // 
             // lbRoutes
             // 
             this.lbRoutes.FormattingEnabled = true;
@@ -312,69 +375,6 @@
             this.lblRoutes.TabIndex = 0;
             this.lblRoutes.Text = "Select a Station to show route options:";
             // 
-            // lblStartStation
-            // 
-            this.lblStartStation.AutoSize = true;
-            this.lblStartStation.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblStartStation.Location = new System.Drawing.Point(292, 158);
-            this.lblStartStation.Name = "lblStartStation";
-            this.lblStartStation.Size = new System.Drawing.Size(103, 20);
-            this.lblStartStation.TabIndex = 8;
-            this.lblStartStation.Text = "Start Station:";
-            // 
-            // lblEndStation
-            // 
-            this.lblEndStation.AutoSize = true;
-            this.lblEndStation.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblEndStation.Location = new System.Drawing.Point(292, 198);
-            this.lblEndStation.Name = "lblEndStation";
-            this.lblEndStation.Size = new System.Drawing.Size(97, 20);
-            this.lblEndStation.TabIndex = 9;
-            this.lblEndStation.Text = "End Station:";
-            // 
-            // lblPrice
-            // 
-            this.lblPrice.AutoSize = true;
-            this.lblPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblPrice.Location = new System.Drawing.Point(292, 250);
-            this.lblPrice.Name = "lblPrice";
-            this.lblPrice.Size = new System.Drawing.Size(48, 20);
-            this.lblPrice.TabIndex = 10;
-            this.lblPrice.Text = "Price:";
-            // 
-            // btnCreateRoute
-            // 
-            this.btnCreateRoute.Location = new System.Drawing.Point(448, 297);
-            this.btnCreateRoute.Name = "btnCreateRoute";
-            this.btnCreateRoute.Size = new System.Drawing.Size(75, 23);
-            this.btnCreateRoute.TabIndex = 11;
-            this.btnCreateRoute.Text = "Create";
-            this.btnCreateRoute.UseVisualStyleBackColor = true;
-            // 
-            // tbPriceEntry
-            // 
-            this.tbPriceEntry.Location = new System.Drawing.Point(410, 250);
-            this.tbPriceEntry.Name = "tbPriceEntry";
-            this.tbPriceEntry.Size = new System.Drawing.Size(113, 20);
-            this.tbPriceEntry.TabIndex = 12;
-            // 
-            // lblStartStationEntry
-            // 
-            this.lblStartStationEntry.AutoSize = true;
-            this.lblStartStationEntry.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblStartStationEntry.Location = new System.Drawing.Point(410, 158);
-            this.lblStartStationEntry.Name = "lblStartStationEntry";
-            this.lblStartStationEntry.Size = new System.Drawing.Size(0, 20);
-            this.lblStartStationEntry.TabIndex = 13;
-            // 
-            // cbEndStationEntry
-            // 
-            this.cbEndStationEntry.FormattingEnabled = true;
-            this.cbEndStationEntry.Location = new System.Drawing.Point(410, 201);
-            this.cbEndStationEntry.Name = "cbEndStationEntry";
-            this.cbEndStationEntry.Size = new System.Drawing.Size(113, 21);
-            this.cbEndStationEntry.TabIndex = 14;
-            // 
             // AdminGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -389,6 +389,7 @@
             this.Controls.Add(this.lblLoginDetails);
             this.Name = "AdminGUI";
             this.Text = "AdminGUI";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AdminGUI_FormClosing);
             this.Load += new System.EventHandler(this.AdminGUI_Load);
             this.tcAdminViews.ResumeLayout(false);
             this.tabTickets.ResumeLayout(false);

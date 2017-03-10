@@ -14,15 +14,26 @@ namespace ModifiedTicketingSystem {
     public partial class ScannerCreatorGUI : Form {
         private Scanner _scanner;
         protected string selectedStation;
-        private string[] stations = new string[2533];
+        private StationList _stations;
         public ScannerCreatorGUI() {
             InitializeComponent();
 
             //var hold = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
             //cbStation.DataSource = hold;
-            stations = File.ReadAllLines(@"UK_TrainStations.txt");
-            cbStation.DataSource = stations;
-            selectedStation = "Abbey Wood";
+            LoadStations();
+
+            foreach (var station in _stations.GetStations()) {
+                cbStation.Items.Add(station);
+            }
+            cbStation.SelectedIndex = 0;
+
+            //cbStation.DataSource = _stations;
+            //selectedStation = "Abbey Wood";
+        }
+
+        private void LoadStations() {
+            List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            _stations = new StationList(stationsTemp);
         }
 
         private void btnCreateScanner_Click(object sender, EventArgs e) {
@@ -32,8 +43,7 @@ namespace ModifiedTicketingSystem {
             } else {
                 radChosen = false;
             }
-            StationList stationList = new StationList();
-            Station station = stationList.GetStationByLocation(selectedStation);
+            Station station = _stations.GetStationByLocation(selectedStation);
             _scanner = new Scanner(station, radChosen);
             ScannerFeedbackGUI gui = new ScannerFeedbackGUI(_scanner);
             gui.Show();

@@ -15,7 +15,7 @@ namespace ModifiedTicketingSystem {
         private TokenMachine _machine;
         private Language _lang;
         private LanguageList _langList;
-        private string[] stations = new string[2533];
+        private StationList _stations;
         private int _account;
         private Stack<string> _actionStack = new Stack<string>();
         private List<int> nudAcceptedValues = new List<int> { 1, 3, 5, 7, 10, 28 };
@@ -38,18 +38,25 @@ namespace ModifiedTicketingSystem {
             //var hold = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
             //cbStartStation.DataSource = hold;
             //cbStartStation.Text = "location";
-            stations = File.ReadAllLines(@"UK_TrainStations.txt");
-            cbStartStation.DataSource = stations;
-            cbEndStation.BindingContext = new BindingContext();
-            cbEndStation.DataSource = stations;
-            //cbEndStation.DataSource = cbStartStation.DataSource;
+
+            LoadStations();
+
+            foreach (var station in _stations.GetStations()) {
+                cbStartStation.Items.Add(station);
+                cbEndStation.Items.Add(station);
+            }
+            cbStartStation.SelectedIndex = 0;
+            cbEndStation.SelectedIndex = 0;
 
             SetupLanguages();
             DisplayLangList();
             counter = _counter;
         }
 
-
+        private void LoadStations() {
+            List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            _stations = new StationList(stationsTemp);
+        }
 
         public static T ReadFromBinaryFile<T>(string filePath) {
             using (Stream stream = File.Open(filePath, FileMode.Open)) {
@@ -131,12 +138,12 @@ namespace ModifiedTicketingSystem {
         }
 
         private void createTicket() {
-            StationList stationList = new StationList();
+            //StationList stationList = new StationList();
             //for new build
             //Station startStation = stationList.GetStationByLocation(selectedStartStation.GetLocation());
             //Station endStation = stationList.GetStationByLocation(selectedEndStation.GetLocation());
-            Station startStation = stationList.GetStationByLocation(selectedStartStation);
-            Station endStation = stationList.GetStationByLocation(selectedEndStation);
+            Station startStation = _stations.GetStationByLocation(selectedStartStation);
+            Station endStation = _stations.GetStationByLocation(selectedEndStation);
             Route route = new Route(startStation, endStation, Convert.ToDecimal(tbSingleJourneyPrice.Text.Substring(1)));
             Ticket ticket = new Ticket(route, true, DateTime.Now, null, "single", _account);
             startStation.AddTicketToList(ticket);
@@ -615,7 +622,6 @@ namespace ModifiedTicketingSystem {
         }
 
         public void Update(int count) {
-            throw new NotImplementedException();
         }
 
 

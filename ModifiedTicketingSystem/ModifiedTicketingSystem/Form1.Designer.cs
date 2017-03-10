@@ -29,6 +29,7 @@ namespace ModifiedTicketingSystem {
             this.btnAddNewGUI = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btnScannerCreator = new System.Windows.Forms.Button();
+            this.btnAdminGUI = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAddNewGUI
@@ -61,11 +62,22 @@ namespace ModifiedTicketingSystem {
             this.btnScannerCreator.UseVisualStyleBackColor = true;
             this.btnScannerCreator.Click += new System.EventHandler(this.btnScannerCreator_Click);
             // 
+            // btnAdminGUI
+            // 
+            this.btnAdminGUI.Location = new System.Drawing.Point(81, 174);
+            this.btnAdminGUI.Name = "btnAdminGUI";
+            this.btnAdminGUI.Size = new System.Drawing.Size(157, 65);
+            this.btnAdminGUI.TabIndex = 3;
+            this.btnAdminGUI.Text = "New Admin GUI";
+            this.btnAdminGUI.UseVisualStyleBackColor = true;
+            this.btnAdminGUI.Click += new System.EventHandler(this.btnAdminGUI_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 312);
+            this.Controls.Add(this.btnAdminGUI);
             this.Controls.Add(this.btnScannerCreator);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnAddNewGUI);
@@ -81,6 +93,7 @@ namespace ModifiedTicketingSystem {
         private Button btnAddNewGUI;
         private Button button1;
         private Button btnScannerCreator;
+        private Button btnAdminGUI;
     }
 }
 

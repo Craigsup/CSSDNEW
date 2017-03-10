@@ -28,7 +28,6 @@ namespace ModifiedTicketingSystem {
         }
 
         private void Form1_Load(object sender, EventArgs e) {
-            //InitialStationLoad();
         }
 
 
@@ -37,13 +36,6 @@ namespace ModifiedTicketingSystem {
                 var binaryFormatter = new BinaryFormatter();
                 binaryFormatter.Serialize(stream, objectToWrite);
             }
-        }
-
-        private void btnAdminGUI_Click(object sender, EventArgs e) {
-            AdminGUI gui = new AdminGUI();
-            gui.Show();
-            counter.RegisterObserver(gui);
-            counter.NotifyObservers();
         }
 
         private void Setup() {
@@ -82,6 +74,28 @@ namespace ModifiedTicketingSystem {
             WriteToBinaryFile<List<Station>>(@"Stations.txt", stationsj, false);
         }
 
+        private StationList LoadStations(StationList _stations) {
+            List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            _stations = new StationList(stationsTemp);
+            return _stations;
+        }
+
+        public void TicketSetup() {
+            selectedStartStation = "Birmingham";
+            selectedEndStation = "Birmingham";
+
+            Ticket ticket = new Ticket();
+            ticket.InitialiseTicketId();
+            ticket.InitialiseTickets();
+
+            List<Station> stationList = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            foreach (var station in stationList) {
+                station.InitialiseTicketList(ticket);
+            }
+            //StationList _stations = new StationList();
+            //_stations = new StationList(stationList);
+        }
+
         private void AdminSetup() {
             StationList _stations = new StationList();
             _stations = LoadStations(_stations);
@@ -93,11 +107,6 @@ namespace ModifiedTicketingSystem {
             accList.SaveAdminData();
         }
 
-        private StationList LoadStations(StationList _stations) {
-            List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
-            _stations = new StationList(stationsTemp);
-            return _stations;
-        }
 
         public static T ReadFromBinaryFile<T>(string filePath) {
             using (Stream stream = File.Open(filePath, FileMode.Open)) {
@@ -106,23 +115,17 @@ namespace ModifiedTicketingSystem {
             }
         }
 
-        public void TicketSetup() {
-            selectedStartStation = "Birmingham";
-            selectedEndStation = "Birmingham";
-
-            Ticket ticket = new Ticket();
-            ticket.InitialiseTicketId();
-            ticket.InitialiseTickets();
-
-            StationList stationList = new StationList();
-            List<Station> listOfStations = stationList.LoadStationData();
-            foreach (var station in listOfStations) {
-                station.InitialiseTicketList(ticket);
-            }
-        }
 
         private void btnScannerCreator_Click(object sender, EventArgs e) {
+            ScannerCreatorGUI gui = new ScannerCreatorGUI();
+            gui.Show();
+        }
 
+        private void btnAdminGUI_Click(object sender, EventArgs e) {
+            AdminGUI gui = new AdminGUI();
+            gui.Show();
+            counter.RegisterObserver(gui);
+            counter.NotifyObservers();
         }
     }
 }

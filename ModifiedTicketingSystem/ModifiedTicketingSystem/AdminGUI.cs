@@ -40,8 +40,6 @@ namespace ModifiedTicketingSystem {
 
         }
 
-
-
         private void LoadStations() {
             List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
             _stations = new StationList(stationsTemp);
@@ -84,7 +82,7 @@ namespace ModifiedTicketingSystem {
 
         private void LoginToAccount(string username, string password) {
             _account = new AdminAccount().VerifyLogin(username, password);
-            lblUsername.Text = username;
+            //lblUsername.Text = username;
             if (_account > -1) {
                 // Hide login screen
                 ToggleLoginScreen();
@@ -174,6 +172,10 @@ namespace ModifiedTicketingSystem {
 
         private void cbStations_SelectedIndexChanged(object sender, EventArgs e) {
             cbSelectStation.SelectedIndex = cbStations.SelectedIndex;
+        }
+
+        private void AdminGUI_FormClosing(object sender, FormClosingEventArgs e) {
+            _account = new Account().LogoutAdmin(_account);
         }
     }
 }
