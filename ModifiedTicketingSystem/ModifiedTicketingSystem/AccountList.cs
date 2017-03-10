@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -71,7 +70,10 @@ namespace ModifiedTicketingSystem {
         /// <param name="x">accountID ot be searched for</param>
         /// <returns>CustomerAccount from the listOfAccounts</returns>
         public CustomerAccount GetAccountById(int x) {
-            LoadCustomerData();
+            if (!_listOfAccounts.Any()) {
+                LoadCustomerData();
+            }
+
             return _listOfAccounts.Where(y => y.GetId() == x).First();
         }
 

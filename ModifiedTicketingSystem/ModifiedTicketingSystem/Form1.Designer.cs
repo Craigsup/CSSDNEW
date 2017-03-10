@@ -29,6 +29,7 @@ namespace ModifiedTicketingSystem {
             this.btnAddNewGUI = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btnAdminGUI = new System.Windows.Forms.Button();
+            this.btnLanguageAdd = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAddNewGUI
@@ -61,11 +62,22 @@ namespace ModifiedTicketingSystem {
             this.btnAdminGUI.UseVisualStyleBackColor = true;
             this.btnAdminGUI.Click += new System.EventHandler(this.btnAdminGUI_Click);
             // 
+            // btnLanguageAdd
+            // 
+            this.btnLanguageAdd.Location = new System.Drawing.Point(383, 168);
+            this.btnLanguageAdd.Name = "btnLanguageAdd";
+            this.btnLanguageAdd.Size = new System.Drawing.Size(131, 61);
+            this.btnLanguageAdd.TabIndex = 3;
+            this.btnLanguageAdd.Text = "New Language GUI";
+            this.btnLanguageAdd.UseVisualStyleBackColor = true;
+            this.btnLanguageAdd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnLanguageAdd_KeyDown);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 312);
+            this.Controls.Add(this.btnLanguageAdd);
             this.Controls.Add(this.btnAdminGUI);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnAddNewGUI);
@@ -81,6 +93,7 @@ namespace ModifiedTicketingSystem {
         private Button btnAddNewGUI;
         private Button button1;
         private Button btnAdminGUI;
+        private Button btnLanguageAdd;
     }
 }
 
