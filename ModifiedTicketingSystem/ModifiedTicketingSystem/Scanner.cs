@@ -44,19 +44,9 @@ namespace ModifiedTicketingSystem
         }
 
         public bool AddScannedCard(SmartCard x) {
-            /*if (_entry) {
-                x.SetScannedTime();
-            }
-
             _scanTime = DateTime.Now;
             SetActiveAccount(_accounts.GetAccountByCardId(x.GetCardId()));
             _aSmartCard = x;
-            IsStartPointDefined();
-            MakePayment();
-
-            _scanTime = DateTime.Now;
-            SetActiveAccount(_accounts.GetAccountByCardId(x.GetCardId()));
-            _aSmartCard = x;*/
 
             if (_entry) {
                 if (IsStartPointDefined()) {
