@@ -144,13 +144,7 @@
     <EmbeddedResource Include="TokenMachineGUI.resx">
       <DependentUpon>TokenMachineGUI.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Languages\1English.language">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Languages\Deutsche.language">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Languages\Español.language">
+    <None Include="Languages\*.language">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">

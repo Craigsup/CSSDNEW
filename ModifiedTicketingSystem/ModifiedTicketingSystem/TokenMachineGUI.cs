@@ -373,7 +373,7 @@ namespace ModifiedTicketingSystem {
          /// </summary>
         private void SetupLanguages() {
             //creates string of path for folder of languages
-            string path = Path.Combine(Environment.CurrentDirectory, @"Languages\");
+            string path =  @"Languages\";
 
             //gets path of all language files
             string[] files = Directory.GetFiles(path, "*.language");
