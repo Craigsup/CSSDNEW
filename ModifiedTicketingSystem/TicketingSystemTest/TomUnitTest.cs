@@ -17,7 +17,7 @@ namespace TicketingSystemTest
 
             string[] files = Directory.GetFiles(path, "*.language");
 
-            TokenMachine testMahcine = new TokenMachine(0.0m);
+            TokenMachine testMachine = new TokenMachine(0.0m);
 
             Language english = new Language("English",
                 new List<string> { "Single Journey", "Timed Pass" },
@@ -35,7 +35,7 @@ namespace TicketingSystemTest
             LanguageList englishLangList = new LanguageList();
             englishLangList.AddLanguage(english);
 
-            LanguageList newLanguageList = testMahcine.LoadLanguages(files);
+            LanguageList newLanguageList = testMachine.LoadLanguages(files);
 
             for (int i = 0; i < 20; i++)
             {
