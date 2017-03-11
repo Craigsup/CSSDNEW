@@ -64,7 +64,7 @@ namespace ModifiedTicketingSystem {
             // 
             // btnLanguageAdd
             // 
-            this.btnLanguageAdd.Location = new System.Drawing.Point(383, 168);
+            this.btnLanguageAdd.Location = new System.Drawing.Point(543, 168);
             this.btnLanguageAdd.Name = "btnLanguageAdd";
             this.btnLanguageAdd.Size = new System.Drawing.Size(131, 61);
             this.btnLanguageAdd.TabIndex = 3;
