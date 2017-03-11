@@ -15,7 +15,7 @@ namespace ModifiedTicketingSystem {
         private TokenMachine _machine;
         private Language _lang;
         private LanguageList _langList;
-        //private string[] stations = new string[2533];
+        private StationList _stations;
         private int _account;
         private Stack<string> _actionStack = new Stack<string>();
         private List<int> nudAcceptedValues = new List<int> { 1, 3, 5, 7, 10, 28 };
@@ -23,6 +23,9 @@ namespace ModifiedTicketingSystem {
         private int selection;
         private Counter counter;
         private Random rand = new Random();
+        private RouteList _routes = new RouteList();
+        private string _ticketAmount;
+        private string _startStation, _endStation;
 
 
         /// <summary>
@@ -34,16 +37,30 @@ namespace ModifiedTicketingSystem {
             //SetupFile();
             dayPassPrice = decimal.Round((decimal)rand.NextDouble(), 2) * 10;
             _machine = new TokenMachine(dayPassPrice);
-            var hold = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
-            cbStartStation.DataSource = hold;
-            //stations = File.ReadAllLines(@"Stations.txt");
-            //cbStartStation.DataSource = stations;
-            cbEndStation.BindingContext = new BindingContext();
-            cbEndStation.DataSource = cbStartStation.DataSource;
+            //var hold = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            //cbStartStation.DataSource = hold;
+            //cbStartStation.Text = "location";
 
+            LoadStations();
+
+            foreach (var station in _stations.GetStations()) {
+                cbStartStation.Items.Add(station);
+            }
+            cbStartStation.SelectedIndex = 0;
+            foreach (var route in _routes.GetRoutesFromStation((Station)cbStartStation.SelectedItem)) {
+                cbEndStation.Items.Add(route.GetEndPoint());
+            }
+            if (cbEndStation.Items.Count > 0) {
+                cbEndStation.SelectedIndex = 0;
+            }
             SetupLanguages();
             DisplayLangList();
             counter = _counter;
+        }
+
+        private void LoadStations() {
+            List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            _stations = new StationList(stationsTemp);
         }
 
         public static T ReadFromBinaryFile<T>(string filePath) {
@@ -123,6 +140,28 @@ namespace ModifiedTicketingSystem {
 
             // Show Payment Screen
             FinalMessage();
+        }
+
+        private void createTicket() {
+            //StationList stationList = new StationList();
+            //for new build
+            //Station startStation = stationList.GetStationByLocation(selectedStartStation.GetLocation());
+            //Station endStation = stationList.GetStationByLocation(selectedEndStation.GetLocation());
+            Station startStation = _stations.GetStationByLocation(_startStation);
+            Station endStation = _stations.GetStationByLocation(_endStation);
+            Route route = new Route(startStation, endStation, Convert.ToDecimal(_ticketAmount.Substring(1)));
+            Ticket ticket = new Ticket(route, true, DateTime.Now, null, "single", _account);
+            startStation.AddTicketToList(ticket);
+            endStation.AddTicketToList(ticket);
+            ticket.InitialiseTicketId();
+        }
+
+        private void createTimedTicket() {
+            for (int i = 0; i <= (nudTicketQuantity.Value - 1); i++) {
+                DateTime date = DateTime.Now.AddDays((int)nudTimedPass.Value);
+                Ticket ticket = new Ticket(true, DateTime.Now, "timed", date, _account);
+                ticket.SerialiseTickets();
+            }
         }
 
         private void Login() {
@@ -205,7 +244,11 @@ namespace ModifiedTicketingSystem {
                     var gap = lbLanguages.Location.Y - lblLanguageTitle.Location.Y;
                     foreach (var language in _langList.GetAllLanguages()) {
                         lbLanguages.Items.Add(language);
+                        //tempString += language.GetStarterOption() + "\n";
+                        //lbLanguages.Location = new Point(lbLanguages.Location.X, lbLanguages.Location.Y + 19);
                     }
+
+                    //lblLanguageTitle.Text = _lang.GetStarterOption();
                 }
                 if (lbLanguages.Items.Count > 0) {
                     lbLanguages.SelectedIndex = 0;
@@ -245,7 +288,9 @@ namespace ModifiedTicketingSystem {
             lblSingleJourneyPrice.Visible = !lblSingleJourneyPrice.Visible;
             cbStartStation.Visible = !cbStartStation.Visible;
             cbEndStation.Visible = !cbEndStation.Visible;
-            tbSingleJourneyPrice.Text = "£5.00";
+            tbSingleJourneyPrice.Text = "£0.00";
+            cbEndStation.SelectedIndex = -1;
+            cbEndStation.Text = ""; 
             tbSingleJourneyPrice.Visible = !tbSingleJourneyPrice.Visible;
             pbBack.Visible = !pbBack.Visible;
             pbHome.Visible = !pbHome.Visible;
@@ -335,6 +380,12 @@ namespace ModifiedTicketingSystem {
             lblFinalMessage.Visible = true;
             lblFinalMessage.Text = "";
 
+            if (selection == 0) {
+                createTicket();
+            } else {
+                createTimedTicket();
+            }
+
             await Task.Delay(1000);
             if (result == DialogResult.Cancel) {
                 decimal amtPaid = _machine.GetPaidAmount();
@@ -368,19 +419,32 @@ namespace ModifiedTicketingSystem {
         /*
          * This is our own functions - not defined in the class diagram
          */
-         /// <summary>
-         /// Reads all language files in the Languages folder and creates a Language object from them
-         /// </summary>
         private void SetupLanguages() {
-            //creates string of path for folder of languages
-            string path =  @"Languages\";
+            _langList = new LanguageList();
 
-            //gets path of all language files
+            string path = Path.Combine(Environment.CurrentDirectory, @"Languages\");
             string[] files = Directory.GetFiles(path, "*.language");
+            for (int i = 0; i < files.Length; i++) {
 
-            //LoadLanguages returns a LanguageList created from all the .language files
-            _langList = _machine.LoadLanguages(files);
+                string[] languageTemp = new string[20];
+
+                languageTemp = File.ReadAllLines(files[i]);
+
+                _langList.AddLanguage(new Language(languageTemp[0],
+                new List<string> { languageTemp[1], languageTemp[2] },
+                new List<string>(),
+                new List<string> { languageTemp[3], languageTemp[4] },
+                new List<string>(),
+                languageTemp[5],
+                new List<string> { languageTemp[6], languageTemp[7], languageTemp[8], languageTemp[9] },
+                new List<string> { languageTemp[10] },
+                languageTemp[11],
+                new List<string> { languageTemp[12], languageTemp[13], languageTemp[14] },
+                new List<string> { languageTemp[15], languageTemp[16], languageTemp[17] },
+                new List<string> { languageTemp[18], languageTemp[19] }));
+            }
         }
+
 
         /*
          * Design Patterns
@@ -434,6 +498,7 @@ namespace ModifiedTicketingSystem {
                 if (string.Compare(lbPaymentMethods.SelectedItem.ToString(), _lang.GetPaymentOptions()[1], StringComparison.Ordinal) == 0) {
                     // CARD PAYMENT
                     ToggleCardPayment();
+                    //CreateTicket();
                     DisplayFinalMessage();
                 } else if (string.Compare(lbPaymentMethods.SelectedItem.ToString(), _lang.GetPaymentOptions()[2], StringComparison.Ordinal) == 0) {
                     // CASH
@@ -464,9 +529,9 @@ namespace ModifiedTicketingSystem {
             pbHome.Visible = !pbHome.Visible;
             lblAmountDue.Visible = !lblAmountDue.Visible;
             lblAmountDueTitle.Visible = !lblAmountDueTitle.Visible;
-            lblAmountDue.Text = selection == 0 ? tbSingleJourneyPrice.Text : tbTotalPrice.Text;
+            lblAmountDue.Text = selection == 0 ? _ticketAmount : tbTotalPrice.Text;
 
-            MoneyForm moneyForm = new MoneyForm(_machine, selection == 0 ? tbSingleJourneyPrice.Text : tbTotalPrice.Text, lblAmountDue);
+            MoneyForm moneyForm = new MoneyForm(_machine, selection == 0 ? _ticketAmount : tbTotalPrice.Text, lblAmountDue);
             var result = moneyForm.ShowDialog();
 
             if (decimal.Parse(lblAmountDue.Text.Substring(1)) < 0) {
@@ -493,16 +558,30 @@ namespace ModifiedTicketingSystem {
         }
 
         private void cbStartStation_SelectedIndexChanged(object sender, EventArgs e) {
+            _startStation = cbStartStation.SelectedItem.ToString();
+            cbEndStation.Items.Clear();
             //Update price of ticket
-            if (cbEndStation.SelectedText != null) {
-                tbSingleJourneyPrice.Text = "£4.00";
+            if (cbEndStation.SelectedItem == null) {
+                tbSingleJourneyPrice.Text = "£0.00";
+            } else {
+                tbSingleJourneyPrice.Text = "£" + _routes.GetRouteByStations((Station)cbStartStation.SelectedItem, (Station)cbEndStation.SelectedItem).GetPrice().ToString();
+            }
+            foreach (var route in _routes.GetRoutesFromStation((Station)cbStartStation.SelectedItem)) {
+                cbEndStation.Items.Add(route.GetEndPoint());
+            }
+            if(cbEndStation.Items.Count > 0){
+                cbEndStation.SelectedIndex = 0;
+            } else {
+                cbEndStation.Text = "";
             }
         }
 
         private void cbEndStation_SelectedIndexChanged(object sender, EventArgs e) {
             //Update price of ticket
-            if (cbStartStation.SelectedText != null) {
-                tbSingleJourneyPrice.Text = "£5.00";
+            if ((cbStartStation.SelectedItem != null) && (cbEndStation.SelectedItem != null)) {
+                tbSingleJourneyPrice.Text = "£" + _routes.GetRouteByStations((Station)cbStartStation.SelectedItem, (Station)cbEndStation.SelectedItem).GetPrice().ToString();
+                _endStation = cbEndStation.SelectedItem.ToString();
+                _ticketAmount = tbSingleJourneyPrice.Text;
             }
         }
 
@@ -539,9 +618,40 @@ namespace ModifiedTicketingSystem {
             } else {
                 // Log in is unsuccessful - show error.
                 MessageBox.Show(this, "Error");
+            }
 
+        }
+
+        /// <summary>
+        /// This method takes the List of CustomerAccount object and binary serializes it, allowing the persistence of data.
+        /// </summary>
+        /// <param name="filePath">This is the file name/output directory.</param>
+        /// <param name="objectToWrite">This is the object that gets serialized. Can be of any type.</param>
+        /// <param name="append">This flags whether to append the object to the end of the file (if it exists already)</param>
+        /// <typeparam name="T">This is the type of T</typeparam>
+        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false) {
+            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create)) {
+                var binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(stream, objectToWrite);
             }
         }
+
+        public void Update(List<Route> routes) {
+            _routes.SetRoutes(routes);
+            cbEndStation.Items.Clear();
+            foreach (var route in _routes.GetRoutesFromStation((Station)cbStartStation.SelectedItem)) {
+                cbEndStation.Items.Add(route.GetEndPoint());
+            }
+            if (cbEndStation.Items.Count > 0) {
+                cbEndStation.SelectedIndex = 0;
+            } else {
+                cbEndStation.Text = "";
+            }
+        }
+
+        public void Update(int count) {
+        }
+
 
         private void ConfigureGuiForLogin() {
             PictureBox userPicture = new PictureBox {
@@ -676,11 +786,6 @@ namespace ModifiedTicketingSystem {
                     ToggleTimedPass(false);
                     nudTimedPass.Focus();
                     break;
-                case "SingleJourney":
-                    HideAll();
-                    ToggleSingleJourney(false);
-                    cbEndStation.Focus();
-                    break;
             }
         }
 
@@ -746,13 +851,10 @@ namespace ModifiedTicketingSystem {
 
         }
 
-        public void Update(int count) {
-
-        }
-
         //public Counter ISubject {
         //    get { return counter; }
         //    set { counter.Increment(); }
         //}
     }
 }
+

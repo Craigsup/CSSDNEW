@@ -6,11 +6,14 @@ using System.Windows.Forms;
 
 namespace ModifiedTicketingSystem {
     public partial class Form1 : Form {
+        string selectedStartStation, selectedEndStation;
 
         private Counter counter;
+        private RouteList routes;
         public Form1() {
             InitializeComponent();
             counter = new Counter();
+            routes = new RouteList();
             Setup();
 
         }
@@ -19,15 +22,29 @@ namespace ModifiedTicketingSystem {
             TokenMachineGUI gui = new TokenMachineGUI(counter);
             gui.Show();
             counter.RegisterObserver(gui);
+            routes.RegisterObserver(gui);
+            routes.NotifyObservers();
         }
 
         private void button1_Click(object sender, EventArgs e) {
             MobileAppGUI gui = new MobileAppGUI();
             gui.Show();
         }
+        
+        private void btnScannerCreator_Click(object sender, EventArgs e) {
+            ScannerCreatorGUI gui = new ScannerCreatorGUI();
+            gui.Show();
+        }
+
+        private void btnAdminGUI_Click(object sender, EventArgs e) {
+            AdminGUI gui = new AdminGUI(routes);
+            gui.Show();
+            counter.RegisterObserver(gui);
+            routes.RegisterObserver(gui);
+            counter.NotifyObservers();
+        }
 
         private void Form1_Load(object sender, EventArgs e) {
-            //InitialStationLoad();
         }
 
 
@@ -38,17 +55,12 @@ namespace ModifiedTicketingSystem {
             }
         }
 
-        private void btnAdminGUI_Click(object sender, EventArgs e) {
-            AdminGUI gui = new AdminGUI();
-            gui.Show();
-            counter.RegisterObserver(gui);
-            counter.NotifyObservers();
-        }
-
         private void Setup() {
             CustomerSetup();
             InitialStationLoad();
+            TicketSetup();
             AdminSetup();
+            RouteSetup();
         }
 
         private void CustomerSetup() {
@@ -80,21 +92,55 @@ namespace ModifiedTicketingSystem {
             WriteToBinaryFile<List<Station>>(@"Stations.txt", stationsj, false);
         }
 
+        private StationList LoadStations(StationList _stations) {
+            List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            _stations = new StationList(stationsTemp);
+            return _stations;
+        }
+
+        public void TicketSetup() {
+            selectedStartStation = "Birmingham";
+            selectedEndStation = "Birmingham";
+
+            Ticket ticket = new Ticket();
+            ticket.InitialiseTicketId();
+            ticket.InitialiseTickets();
+
+            List<Station> stationList = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            foreach (var station in stationList) {
+                station.InitialiseTicketList(ticket);
+            }
+            //StationList _stations = new StationList();
+            //_stations = new StationList(stationList);
+        }
+
         private void AdminSetup() {
-            StationList _stations = new StationList();
-            _stations = LoadStations(_stations);
             var acc0 = new AdminAccount(0, "admin-pete-w", "password", "Pete Wilkinson", false);
-            acc0.NewRoute(_stations.GetStationByLocation("Sheffield"), _stations.GetStationByLocation("London"), 25.00m);
 
             AccountList accList = new AccountList(true);
             accList.AddAdminAccount(acc0);
             accList.SaveAdminData();
         }
 
-        private StationList LoadStations(StationList _stations) {
-            List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
-            _stations = new StationList(stationsTemp);
-            return _stations;
+        private void RouteSetup() {
+            StationList _stations = new StationList();
+            _stations = LoadStations(_stations);
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Sheffield"), _stations.GetStationByLocation("Meadowhall"), 25.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Sheffield"), _stations.GetStationByLocation("Leeds"), 15.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Nottingham"), _stations.GetStationByLocation("Sheffield"), 12.50m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("London"), _stations.GetStationByLocation("Brighton"), 23.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Manchester"), _stations.GetStationByLocation("Liverpool"), 27.60m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Liverpool"), _stations.GetStationByLocation("Sheffield"), 32.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("London"), _stations.GetStationByLocation("Birmingham"), 39.50m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Birmingham"), _stations.GetStationByLocation("London"), 39.50m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Edinburgh"), _stations.GetStationByLocation("Glasgow"), 10.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Edinburgh"), _stations.GetStationByLocation("London"), 70.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Plymouth"), _stations.GetStationByLocation("Ipswich"), 26.00m));
+        }
+
+        private void button2_Click(object sender, EventArgs e) {
+            var gui = new AddLanguageGUI();
+            gui.ShowDialog();
         }
 
         public static T ReadFromBinaryFile<T>(string filePath) {
@@ -104,10 +150,6 @@ namespace ModifiedTicketingSystem {
             }
         }
 
-        private void btnLanguageAdd_Click(object sender, EventArgs e)
-        {
-            var languagegui = new AddLanguageGUI();
-            languagegui.Show();
-        }
+
     }
 }

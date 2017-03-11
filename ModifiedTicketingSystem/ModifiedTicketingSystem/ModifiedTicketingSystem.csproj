@@ -103,7 +103,19 @@
     <Compile Include="Route.cs" />
     <Compile Include="RouteList.cs" />
     <Compile Include="Scanner.cs" />
+    <Compile Include="ScannerCreatorGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScannerCreatorGUI.designer.cs">
+      <DependentUpon>ScannerCreatorGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScannerFeedback.cs" />
+    <Compile Include="ScannerFeedbackGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScannerFeedbackGUI.designer.cs">
+      <DependentUpon>ScannerFeedbackGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="SmartCard.cs" />
     <Compile Include="Station.cs" />
     <Compile Include="StationList.cs" />
@@ -141,6 +153,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ScannerCreatorGUI.resx">
+      <DependentUpon>ScannerCreatorGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScannerFeedbackGUI.resx">
+      <DependentUpon>ScannerFeedbackGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TokenMachineGUI.resx">
       <DependentUpon>TokenMachineGUI.cs</DependentUpon>
     </EmbeddedResource>

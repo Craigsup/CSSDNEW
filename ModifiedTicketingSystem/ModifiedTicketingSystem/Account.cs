@@ -134,6 +134,20 @@ namespace ModifiedTicketingSystem {
             return -1;
         }
 
+        public int LogoutAdmin(int accountId) {
+            var accs = ReadFromBinaryFile<List<AdminAccount>>(@"AdminAccounts.txt");
+            foreach (var account in accs) {
+                if (account._accountId == accountId) {
+                    account._loginStatus = false;
+                    var temp = new AccountList(accs);
+                    temp.SaveAdminData();
+                    return -1;
+                }
+            }
+
+            return -1;
+        }
+
         /// <summary>
         /// Deserialises data that is saved in a file.
         /// </summary>
