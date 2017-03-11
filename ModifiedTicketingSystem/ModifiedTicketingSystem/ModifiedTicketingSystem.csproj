@@ -70,11 +70,11 @@
     <Compile Include="CustomerAccount.cs" />
     <Compile Include="Departure.cs" />
     <Compile Include="DepartureList.cs" />
-    <Compile Include="MainGUI.cs">
+    <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainGUI.Designer.cs">
-      <DependentUpon>MainGUI.cs</DependentUpon>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Journey.cs" />
     <Compile Include="JourneyList.cs" />
@@ -135,8 +135,8 @@
     <EmbeddedResource Include="AdminGUI.resx">
       <DependentUpon>AdminGUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainGUI.resx">
-      <DependentUpon>MainGUI.cs</DependentUpon>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MobileAppGUI.resx">
       <DependentUpon>MobileAppGUI.cs</DependentUpon>

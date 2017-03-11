@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
 namespace ModifiedTicketingSystem {
-    public partial class MainGUI : Form {
+    public partial class Form1 : Form {
         string selectedStartStation, selectedEndStation;
 
         private Counter counter;
@@ -14,7 +14,7 @@ namespace ModifiedTicketingSystem {
         /// <summary>
         /// Main GUI for selecting which GUI is wanted.
         /// </summary>
-        public MainGUI() {
+        public Form1() {
             InitializeComponent();
             counter = new Counter();
             routes = new RouteList();
