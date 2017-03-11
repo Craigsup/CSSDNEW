@@ -5,12 +5,16 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
 namespace ModifiedTicketingSystem {
-    public partial class Form1 : Form {
+    public partial class MainGUI : Form {
         string selectedStartStation, selectedEndStation;
 
         private Counter counter;
         private RouteList routes;
-        public Form1() {
+
+        /// <summary>
+        /// Main GUI for selecting which GUI is wanted.
+        /// </summary>
+        public MainGUI() {
             InitializeComponent();
             counter = new Counter();
             routes = new RouteList();
@@ -45,6 +49,7 @@ namespace ModifiedTicketingSystem {
         }
 
         private void Form1_Load(object sender, EventArgs e) {
+
         }
 
 

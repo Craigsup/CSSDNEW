@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 
 namespace ModifiedTicketingSystem {
-    partial class Form1 {
+    partial class MainGUI {
         /// <summary>
         /// Required designer variable.
         /// </summary>
