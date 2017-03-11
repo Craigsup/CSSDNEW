@@ -24,6 +24,8 @@ namespace ModifiedTicketingSystem {
         private Counter counter;
         private Random rand = new Random();
         private RouteList _routes = new RouteList();
+        private string _ticketAmount;
+        private string _startStation, _endStation;
 
 
         /// <summary>
@@ -145,8 +147,8 @@ namespace ModifiedTicketingSystem {
             //for new build
             //Station startStation = stationList.GetStationByLocation(selectedStartStation.GetLocation());
             //Station endStation = stationList.GetStationByLocation(selectedEndStation.GetLocation());
-            Station startStation = _stations.GetStationByLocation(cbStartStation.SelectedItem.ToString());
-            Station endStation = _stations.GetStationByLocation(cbEndStation.SelectedItem.ToString());
+            Station startStation = _stations.GetStationByLocation(_startStation);
+            Station endStation = _stations.GetStationByLocation(_endStation);
             Route route = new Route(startStation, endStation, Convert.ToDecimal(tbSingleJourneyPrice.Text.Substring(1)));
             Ticket ticket = new Ticket(route, true, DateTime.Now, null, "single", _account);
             startStation.AddTicketToList(ticket);
@@ -527,9 +529,9 @@ namespace ModifiedTicketingSystem {
             pbHome.Visible = !pbHome.Visible;
             lblAmountDue.Visible = !lblAmountDue.Visible;
             lblAmountDueTitle.Visible = !lblAmountDueTitle.Visible;
-            lblAmountDue.Text = selection == 0 ? tbSingleJourneyPrice.Text : tbTotalPrice.Text;
+            lblAmountDue.Text = selection == 0 ? _ticketAmount : tbTotalPrice.Text;
 
-            MoneyForm moneyForm = new MoneyForm(_machine, selection == 0 ? tbSingleJourneyPrice.Text : tbTotalPrice.Text, lblAmountDue);
+            MoneyForm moneyForm = new MoneyForm(_machine, selection == 0 ? _ticketAmount : tbTotalPrice.Text, lblAmountDue);
             var result = moneyForm.ShowDialog();
 
             if (decimal.Parse(lblAmountDue.Text.Substring(1)) < 0) {
@@ -556,6 +558,7 @@ namespace ModifiedTicketingSystem {
         }
 
         private void cbStartStation_SelectedIndexChanged(object sender, EventArgs e) {
+            _startStation = cbStartStation.SelectedItem.ToString();
             cbEndStation.Items.Clear();
             //Update price of ticket
             if (cbEndStation.SelectedItem == null) {
@@ -577,6 +580,8 @@ namespace ModifiedTicketingSystem {
             //Update price of ticket
             if ((cbStartStation.SelectedItem != null) && (cbEndStation.SelectedItem != null)) {
                 tbSingleJourneyPrice.Text = "£" + _routes.GetRouteByStations((Station)cbStartStation.SelectedItem, (Station)cbEndStation.SelectedItem).GetPrice().ToString();
+                _endStation = cbEndStation.SelectedItem.ToString();
+                _ticketAmount = tbSingleJourneyPrice.Text;
             }
         }
 
