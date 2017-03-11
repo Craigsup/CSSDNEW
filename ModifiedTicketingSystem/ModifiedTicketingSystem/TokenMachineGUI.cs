@@ -149,7 +149,7 @@ namespace ModifiedTicketingSystem {
             //Station endStation = stationList.GetStationByLocation(selectedEndStation.GetLocation());
             Station startStation = _stations.GetStationByLocation(_startStation);
             Station endStation = _stations.GetStationByLocation(_endStation);
-            Route route = new Route(startStation, endStation, Convert.ToDecimal(tbSingleJourneyPrice.Text.Substring(1)));
+            Route route = new Route(startStation, endStation, Convert.ToDecimal(_ticketAmount.Substring(1)));
             Ticket ticket = new Ticket(route, true, DateTime.Now, null, "single", _account);
             startStation.AddTicketToList(ticket);
             endStation.AddTicketToList(ticket);

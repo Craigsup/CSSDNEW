@@ -43,8 +43,8 @@ namespace ModifiedTicketingSystem
             return _aBarrier;
         }
 
-        public void AddScannedCard(SmartCard x) {
-            if (_entry) {
+        public bool AddScannedCard(SmartCard x) {
+            /*if (_entry) {
                 x.SetScannedTime();
             }
 
@@ -53,6 +53,26 @@ namespace ModifiedTicketingSystem
             _aSmartCard = x;
             IsStartPointDefined();
             MakePayment();
+
+            _scanTime = DateTime.Now;
+            SetActiveAccount(_accounts.GetAccountByCardId(x.GetCardId()));
+            _aSmartCard = x;*/
+
+            if (_entry) {
+                if (IsStartPointDefined()) {
+                    return false;
+                } else {
+                    x.SetScannedTime();
+                    _account.SetStartPoint(_location);
+                    return true;
+                }
+            } else {
+                if (IsStartPointDefined()) {
+                    return MakePayment();
+                } else {
+                    return false;
+                }
+            }
         }
 
         public bool GetScannerType() {
@@ -133,25 +153,18 @@ namespace ModifiedTicketingSystem
             _scanTime = DateTime.Now;
         }
 
-        public void MakePayment() {
+        public bool MakePayment() {
             var start = _account.GetStartPoint();
             var end = _account.GetEndPoint();
             var route = _routeList.GetRouteByStations(start, end);
             var price = route.GetPrice();
-//            if (_aSmartCard.GetScannedTime().ToLocalTime().Hour > 9 &&
-//                _aSmartCard.GetScannedTime().ToLocalTime().Hour < 17) {
-//                price *= 1.3m;
-//            }
 
             if (start.GetDepartures().GetDeparture(end, _aSmartCard.GetScannedTime()).IsPeakDeparture()) {
                 price *= 1.3m;
             }
 
-            //_account
-
-
             // PAYMENT SHIT GOES HERE.
-            if (_account.GetTotalPaidByDate(GetScannedTime()) > _dayPassPrice) {
+            /*if (_account.GetTotalPaidByDate(GetScannedTime()) > _dayPassPrice) {
                 _account.SetFreeTravel(true);
             }
             else {
@@ -163,6 +176,22 @@ namespace ModifiedTicketingSystem
                 else {
                     
                 }
+            }*/
+
+            if (_account.GetFreeTravel()) {
+                return true;
+            }
+            if (_account.GetTotalPaidByDate(GetScannedTime()) > _dayPassPrice) {
+                _account.SetFreeTravel(true);
+                return true;
+            }
+            if (_account.GetBalance() >= price) {
+                _account.UpdateBalance(-price);
+                _account.SetStartPoint(null);
+                _account.SetEndPoint(null);
+                return true;
+            } else {
+                return false;
             }
 
             /*PaymentList payList = new PaymentList();
