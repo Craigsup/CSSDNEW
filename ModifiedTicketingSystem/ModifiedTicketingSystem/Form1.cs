@@ -9,9 +9,11 @@ namespace ModifiedTicketingSystem {
         string selectedStartStation, selectedEndStation;
 
         private Counter counter;
+        private RouteList routes;
         public Form1() {
             InitializeComponent();
             counter = new Counter();
+            routes = new RouteList();
             Setup();
 
         }
@@ -20,11 +22,26 @@ namespace ModifiedTicketingSystem {
             TokenMachineGUI gui = new TokenMachineGUI(counter);
             gui.Show();
             counter.RegisterObserver(gui);
+            routes.RegisterObserver(gui);
+            routes.NotifyObservers();
         }
 
         private void button1_Click(object sender, EventArgs e) {
             MobileAppGUI gui = new MobileAppGUI();
             gui.Show();
+        }
+        
+        private void btnScannerCreator_Click(object sender, EventArgs e) {
+            ScannerCreatorGUI gui = new ScannerCreatorGUI();
+            gui.Show();
+        }
+
+        private void btnAdminGUI_Click(object sender, EventArgs e) {
+            AdminGUI gui = new AdminGUI(routes);
+            gui.Show();
+            counter.RegisterObserver(gui);
+            routes.RegisterObserver(gui);
+            counter.NotifyObservers();
         }
 
         private void Form1_Load(object sender, EventArgs e) {
@@ -43,6 +60,7 @@ namespace ModifiedTicketingSystem {
             InitialStationLoad();
             TicketSetup();
             AdminSetup();
+            RouteSetup();
         }
 
         private void CustomerSetup() {
@@ -97,16 +115,28 @@ namespace ModifiedTicketingSystem {
         }
 
         private void AdminSetup() {
-            StationList _stations = new StationList();
-            _stations = LoadStations(_stations);
             var acc0 = new AdminAccount(0, "admin-pete-w", "password", "Pete Wilkinson", false);
-            acc0.NewRoute(_stations.GetStationByLocation("Sheffield"), _stations.GetStationByLocation("London"), 25.00m);
 
             AccountList accList = new AccountList(true);
             accList.AddAdminAccount(acc0);
             accList.SaveAdminData();
         }
 
+        private void RouteSetup() {
+            StationList _stations = new StationList();
+            _stations = LoadStations(_stations);
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Sheffield"), _stations.GetStationByLocation("Meadowhall"), 25.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Sheffield"), _stations.GetStationByLocation("Leeds"), 15.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Nottingham"), _stations.GetStationByLocation("Sheffield"), 12.50m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("London"), _stations.GetStationByLocation("Brighton"), 23.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Manchester"), _stations.GetStationByLocation("Liverpool"), 27.60m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Liverpool"), _stations.GetStationByLocation("Sheffield"), 32.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("London"), _stations.GetStationByLocation("Birmingham"), 39.50m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Birmingham"), _stations.GetStationByLocation("London"), 39.50m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Edinburgh"), _stations.GetStationByLocation("Glasgow"), 10.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Edinburgh"), _stations.GetStationByLocation("London"), 70.00m));
+            routes.AddRoute(new Route(_stations.GetStationByLocation("Plymouth"), _stations.GetStationByLocation("Ipswich"), 26.00m));
+        }
 
         public static T ReadFromBinaryFile<T>(string filePath) {
             using (Stream stream = File.Open(filePath, FileMode.Open)) {
@@ -116,16 +146,5 @@ namespace ModifiedTicketingSystem {
         }
 
 
-        private void btnScannerCreator_Click(object sender, EventArgs e) {
-            ScannerCreatorGUI gui = new ScannerCreatorGUI();
-            gui.Show();
-        }
-
-        private void btnAdminGUI_Click(object sender, EventArgs e) {
-            AdminGUI gui = new AdminGUI();
-            gui.Show();
-            counter.RegisterObserver(gui);
-            counter.NotifyObservers();
-        }
     }
 }

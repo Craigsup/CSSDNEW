@@ -23,7 +23,7 @@ namespace ModifiedTicketingSystem {
         private int selection;
         private Counter counter;
         private Random rand = new Random();
-        string selectedStartStation, selectedEndStation;
+        private RouteList _routes = new RouteList();
 
 
         /// <summary>
@@ -43,11 +43,14 @@ namespace ModifiedTicketingSystem {
 
             foreach (var station in _stations.GetStations()) {
                 cbStartStation.Items.Add(station);
-                cbEndStation.Items.Add(station);
             }
             cbStartStation.SelectedIndex = 0;
-            cbEndStation.SelectedIndex = 0;
-
+            foreach (var route in _routes.GetRoutesFromStation((Station)cbStartStation.SelectedItem)) {
+                cbEndStation.Items.Add(route.GetEndPoint());
+            }
+            if (cbEndStation.Items.Count > 0) {
+                cbEndStation.SelectedIndex = 0;
+            }
             SetupLanguages();
             DisplayLangList();
             counter = _counter;
@@ -142,8 +145,8 @@ namespace ModifiedTicketingSystem {
             //for new build
             //Station startStation = stationList.GetStationByLocation(selectedStartStation.GetLocation());
             //Station endStation = stationList.GetStationByLocation(selectedEndStation.GetLocation());
-            Station startStation = _stations.GetStationByLocation(selectedStartStation);
-            Station endStation = _stations.GetStationByLocation(selectedEndStation);
+            Station startStation = _stations.GetStationByLocation(cbStartStation.SelectedItem.ToString());
+            Station endStation = _stations.GetStationByLocation(cbEndStation.SelectedItem.ToString());
             Route route = new Route(startStation, endStation, Convert.ToDecimal(tbSingleJourneyPrice.Text.Substring(1)));
             Ticket ticket = new Ticket(route, true, DateTime.Now, null, "single", _account);
             startStation.AddTicketToList(ticket);
@@ -283,7 +286,9 @@ namespace ModifiedTicketingSystem {
             lblSingleJourneyPrice.Visible = !lblSingleJourneyPrice.Visible;
             cbStartStation.Visible = !cbStartStation.Visible;
             cbEndStation.Visible = !cbEndStation.Visible;
-            tbSingleJourneyPrice.Text = "£5.00";
+            tbSingleJourneyPrice.Text = "£0.00";
+            cbEndStation.SelectedIndex = -1;
+            cbEndStation.Text = ""; 
             tbSingleJourneyPrice.Visible = !tbSingleJourneyPrice.Visible;
             pbBack.Visible = !pbBack.Visible;
             pbHome.Visible = !pbHome.Visible;
@@ -551,23 +556,28 @@ namespace ModifiedTicketingSystem {
         }
 
         private void cbStartStation_SelectedIndexChanged(object sender, EventArgs e) {
+            cbEndStation.Items.Clear();
             //Update price of ticket
-            if (cbEndStation.SelectedItem != null) {
-                tbSingleJourneyPrice.Text = "£4.00";
+            if (cbEndStation.SelectedItem == null) {
+                tbSingleJourneyPrice.Text = "£0.00";
+            } else {
+                tbSingleJourneyPrice.Text = "£" + _routes.GetRouteByStations((Station)cbStartStation.SelectedItem, (Station)cbEndStation.SelectedItem).GetPrice().ToString();
             }
-            //for new combobox implementation
-            //selectedStartStation = (Station)cbStartStation.SelectedItem;
-            selectedStartStation = cbStartStation.SelectedItem.ToString();
+            foreach (var route in _routes.GetRoutesFromStation((Station)cbStartStation.SelectedItem)) {
+                cbEndStation.Items.Add(route.GetEndPoint());
+            }
+            if(cbEndStation.Items.Count > 0){
+                cbEndStation.SelectedIndex = 0;
+            } else {
+                cbEndStation.Text = "";
+            }
         }
 
         private void cbEndStation_SelectedIndexChanged(object sender, EventArgs e) {
             //Update price of ticket
-            if (cbStartStation.SelectedItem != null) {
-                tbSingleJourneyPrice.Text = "£5.00";
+            if ((cbStartStation.SelectedItem != null) && (cbEndStation.SelectedItem != null)) {
+                tbSingleJourneyPrice.Text = "£" + _routes.GetRouteByStations((Station)cbStartStation.SelectedItem, (Station)cbEndStation.SelectedItem).GetPrice().ToString();
             }
-            //for new combobox implementation
-            //selectedEndStation = (Station)cbEndStation.SelectedItem;
-            selectedEndStation = cbEndStation.SelectedItem.ToString();
         }
 
         private void tbUsername_KeyDown(object sender, KeyEventArgs e) {
@@ -618,6 +628,19 @@ namespace ModifiedTicketingSystem {
             using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create)) {
                 var binaryFormatter = new BinaryFormatter();
                 binaryFormatter.Serialize(stream, objectToWrite);
+            }
+        }
+
+        public void Update(List<Route> routes) {
+            _routes.SetRoutes(routes);
+            cbEndStation.Items.Clear();
+            foreach (var route in _routes.GetRoutesFromStation((Station)cbStartStation.SelectedItem)) {
+                cbEndStation.Items.Add(route.GetEndPoint());
+            }
+            if (cbEndStation.Items.Count > 0) {
+                cbEndStation.SelectedIndex = 0;
+            } else {
+                cbEndStation.Text = "";
             }
         }
 

@@ -7,5 +7,7 @@ using System.Threading.Tasks;
 namespace ModifiedTicketingSystem {
     public interface IObserver {
         void Update(int count);
+
+        void Update(List<Route> routes);
     }
 }

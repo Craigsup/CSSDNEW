@@ -15,9 +15,10 @@ namespace ModifiedTicketingSystem {
     public partial class AdminGUI : Form, IObserver {
         private int _account;
         private StationList _stations;
+        private RouteList routes;
         //private Station _station;
 
-        public AdminGUI() {
+        public AdminGUI(RouteList _routes) {
             InitializeComponent();
 
             lblLoginDetails.Visible = true;
@@ -30,6 +31,7 @@ namespace ModifiedTicketingSystem {
             tbUsername.Text = "admin-pete-w";
 
             LoadStations();
+            routes = _routes;
 
             foreach (var station in _stations.GetStations()) {
                 cbStations.Items.Add(station);
@@ -95,27 +97,6 @@ namespace ModifiedTicketingSystem {
             }
         }
 
-        private void ConfigureGuiForLogin() {
-            PictureBox userPicture = new PictureBox {
-                Location = new Point(Width - 150, 15),
-                Image = (Image)Resources.ResourceManager.GetObject("_" + _account),
-                SizeMode = PictureBoxSizeMode.StretchImage,
-                Size = new Size(38, 38),
-                Visible = true,
-                Name = "account"
-            };
-            Controls.Add(userPicture);
-            Label userName = new Label {
-                Name = "lblAccountUsername",
-                Text =
-                    new CustomerAccount().GetXByAccountId<string>(_account, "username") + "\n£" +
-                    string.Format("{0:0000000.00}", new CustomerAccount().GetXByAccountId<string>(_account, "balance")),
-                Location = new Point(Width - 150 + userPicture.Width + 3, 15),
-                AutoSize = true
-            };
-            Controls.Add(userName);
-        }
-
         private void HideAll() {
             foreach (var x in Controls.OfType<Button>()) {
                 x.Visible = false;
@@ -154,6 +135,10 @@ namespace ModifiedTicketingSystem {
             lblTicketCount.Text = count.ToString();
         }
 
+        public void Update(List<Route> routes) {
+
+        }
+
         private void cbSelectStation_SelectedIndexChanged(object sender, EventArgs e) {
             lblStartStationEntry.Text = cbSelectStation.SelectedItem.ToString();
             cbStations.SelectedIndex = cbSelectStation.SelectedIndex;
@@ -164,9 +149,11 @@ namespace ModifiedTicketingSystem {
                 }
             }
 
-            var test = new AdminAccount().GetXByAccountId<RouteList>(_account, "routes");
-            foreach (var route in test.GetAllRoutes()) {
-                lbRoutes.Items.Add(route);
+            lbRoutes.Items.Clear();
+            foreach (var route in routes.GetAllRoutes()) {
+                if (route.GetStartPoint().ToString() == cbSelectStation.SelectedItem.ToString()) {
+                    lbRoutes.Items.Add(route.GetEndPoint().ToString());
+                }
             }
         }
 
@@ -176,6 +163,18 @@ namespace ModifiedTicketingSystem {
 
         private void AdminGUI_FormClosing(object sender, FormClosingEventArgs e) {
             _account = new Account().LogoutAdmin(_account);
+        }
+
+        private void btnCreateRoute_Click(object sender, EventArgs e) {
+            routes.AddRoute(new Route((Station)cbSelectStation.SelectedItem, (Station)cbEndStationEntry.SelectedItem, decimal.Parse(tbPriceEntry.Text)));
+
+            lbRoutes.Items.Clear();
+            foreach (var route in routes.GetAllRoutes()) {
+                if(route.GetStartPoint().ToString() == cbSelectStation.SelectedItem.ToString()) {
+                    lbRoutes.Items.Add(route.GetEndPoint().ToString());
+                }
+            }
+            routes.NotifyObservers();
         }
     }
 }

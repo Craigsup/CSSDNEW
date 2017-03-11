@@ -295,6 +295,7 @@
             this.btnCreateRoute.TabIndex = 11;
             this.btnCreateRoute.Text = "Create";
             this.btnCreateRoute.UseVisualStyleBackColor = true;
+            this.btnCreateRoute.Click += new System.EventHandler(this.btnCreateRoute_Click);
             // 
             // lblPrice
             // 
