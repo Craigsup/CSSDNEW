@@ -30,7 +30,7 @@ namespace ModifiedTicketingSystem {
             this.button1 = new System.Windows.Forms.Button();
             this.btnScannerCreator = new System.Windows.Forms.Button();
             this.btnAdminGUI = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnAddLanguage = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAddNewGUI
@@ -47,7 +47,7 @@ namespace ModifiedTicketingSystem {
             // 
             this.button1.Location = new System.Drawing.Point(383, 63);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(131, 67);
+            this.button1.Size = new System.Drawing.Size(157, 67);
             this.button1.TabIndex = 1;
             this.button1.Text = "New Mobile App GUI";
             this.button1.UseVisualStyleBackColor = true;
@@ -55,9 +55,9 @@ namespace ModifiedTicketingSystem {
             // 
             // btnScannerCreator
             // 
-            this.btnScannerCreator.Location = new System.Drawing.Point(383, 174);
+            this.btnScannerCreator.Location = new System.Drawing.Point(81, 263);
             this.btnScannerCreator.Name = "btnScannerCreator";
-            this.btnScannerCreator.Size = new System.Drawing.Size(131, 65);
+            this.btnScannerCreator.Size = new System.Drawing.Size(157, 65);
             this.btnScannerCreator.TabIndex = 2;
             this.btnScannerCreator.Text = "Open Scanner Creator";
             this.btnScannerCreator.UseVisualStyleBackColor = true;
@@ -73,22 +73,22 @@ namespace ModifiedTicketingSystem {
             this.btnAdminGUI.UseVisualStyleBackColor = true;
             this.btnAdminGUI.Click += new System.EventHandler(this.btnAdminGUI_Click);
             // 
-            // button2
+            // btnAddLanguage
             // 
-            this.button2.Location = new System.Drawing.Point(260, 266);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnAddLanguage.Location = new System.Drawing.Point(383, 174);
+            this.btnAddLanguage.Name = "btnAddLanguage";
+            this.btnAddLanguage.Size = new System.Drawing.Size(157, 65);
+            this.btnAddLanguage.TabIndex = 4;
+            this.btnAddLanguage.Text = "Add New Language";
+            this.btnAddLanguage.UseVisualStyleBackColor = true;
+            this.btnAddLanguage.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(758, 419);
-            this.Controls.Add(this.button2);
+            this.ClientSize = new System.Drawing.Size(604, 380);
+            this.Controls.Add(this.btnAddLanguage);
             this.Controls.Add(this.btnAdminGUI);
             this.Controls.Add(this.btnScannerCreator);
             this.Controls.Add(this.button1);
@@ -106,7 +106,7 @@ namespace ModifiedTicketingSystem {
         private Button button1;
         private Button btnScannerCreator;
         private Button btnAdminGUI;
-        private Button button2;
+        private Button btnAddLanguage;
     }
 }
 
