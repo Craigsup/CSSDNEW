@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ModifiedTicketingSystem {
@@ -100,6 +102,38 @@ namespace ModifiedTicketingSystem {
 
         public void Reset() {
             _paymentList = null;
+        }
+        /// <summary>
+        /// Loads all the .language files in the "files" array and creates a LanguageList from them
+        /// </summary>
+        /// <param name="files">Arrya of locations of .language files</param>
+        /// <returns>LanguageList created from all .language files</returns>
+        public LanguageList LoadLanguages(string[] files)
+        {
+            //Creates LanguageList to temporarily hold languages
+            LanguageList langListTemp = new LanguageList();
+
+            //goes through each language file and creates a Language object for it
+            for (int i = 0; i < files.Length; i++)
+            {
+                var languageTemp = File.ReadAllLines(files[i]);
+
+                langListTemp.AddLanguage(new Language(languageTemp[0],
+                new List<string> { languageTemp[1], languageTemp[2] },
+                new List<string>(),
+                new List<string> { languageTemp[3], languageTemp[4] },
+                new List<string>(),
+                languageTemp[5],
+                new List<string> { languageTemp[6], languageTemp[7], languageTemp[8], languageTemp[9] },
+                new List<string> { languageTemp[10] },
+                languageTemp[11],
+                new List<string> { languageTemp[12], languageTemp[13], languageTemp[14] },
+                new List<string> { languageTemp[15], languageTemp[16], languageTemp[17] },
+                new List<string> { languageTemp[18], languageTemp[19] }));
+            }
+
+            //return langListTemp to GUI
+            return langListTemp;
         }
 
     }

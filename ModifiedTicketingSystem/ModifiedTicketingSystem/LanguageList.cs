@@ -36,5 +36,10 @@ namespace ModifiedTicketingSystem {
         public void AddLanguage(Language lang) {
             ListOfLanguages.Add(lang);
         }
+
+        public override string ToString()
+        {
+            return ListOfLanguages.ToString();
+        }
     }
 }
