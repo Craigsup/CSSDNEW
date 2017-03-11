@@ -55,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TomUnitTest.cs" />
     <Compile Include="CraigUnitTest.cs" />
+    <Compile Include="SamUnitTest.cs" />
     <Compile Include="UnitTests.cs" />
   </ItemGroup>
   <ItemGroup>

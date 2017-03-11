@@ -23,6 +23,7 @@ namespace ModifiedTicketingSystem {
             }
 
             _listOfRoutes.Add(x);
+            NotifyObservers();
         }
 
         public Route GetRouteByStations(Station x, Station y) {
