@@ -16,8 +16,12 @@ namespace ModifiedTicketingSystem {
         private int _account;
         private StationList _stations;
         private RouteList routes;
-        //private Station _station;
 
+        /// <summary>
+        /// The AdminGUI is initialized with the _routes paramater so that it can update the RouteList 
+        /// when routes are added.
+        /// </summary>
+        /// <param name="_routes">The RouteList object that is created in form1</param>
         public AdminGUI(RouteList _routes) {
             InitializeComponent();
 
@@ -42,11 +46,21 @@ namespace ModifiedTicketingSystem {
 
         }
 
+        /// <summary>
+        /// Load the stations from the Stations.txt file into a class variable.
+        /// Only happens during initialization
+        /// </summary>
         private void LoadStations() {
             List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
             _stations = new StationList(stationsTemp);
         }
 
+        /// <summary>
+        /// Reads in serialized data from a file
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public static T ReadFromBinaryFile<T>(string filePath) {
             using (Stream stream = File.Open(filePath, FileMode.Open)) {
                 var binaryFormatter = new BinaryFormatter();
@@ -54,12 +68,10 @@ namespace ModifiedTicketingSystem {
             }
         }
 
-        private void ShowLogin() {
-            // Show login screen
-            ToggleLoginScreen();
-            tbUsername.Focus();
-        }
-
+        /// <summary>
+        /// changes the page to the homescreen layout.
+        /// Only used to change from the login page.
+        /// </summary>
         private void ShowHome() {
             HideAll();
             ToggleHomeScreen();
@@ -82,21 +94,27 @@ namespace ModifiedTicketingSystem {
             tcAdminViews.Visible = !tcAdminViews.Visible;
         }
 
+        /// <summary>
+        /// Creates a temporary AdminAccount to use AdminAccount functions (in this case verification of login details).
+        /// if the username and password are accepted then _account is assigned as the account id. This will always be
+        /// be higher than -1 so verify login returns -1 if the verification failed.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         private void LoginToAccount(string username, string password) {
             _account = new AdminAccount().VerifyLogin(username, password);
-            //lblUsername.Text = username;
             if (_account > -1) {
                 // Hide login screen
                 ToggleLoginScreen();
 
                 //Show Home Screen
                 ShowHome();
-
-
-                // Log in successful. Do something.
             }
         }
 
+        /// <summary>
+        /// Hides all controls on the form
+        /// </summary>
         private void HideAll() {
             foreach (var x in Controls.OfType<Button>()) {
                 x.Visible = false;
@@ -131,14 +149,30 @@ namespace ModifiedTicketingSystem {
 
         }
 
+
+        /// <summary>
+        /// Updates the ticket count label on the ticket tab with the new value passed through from the subject. 
+        /// </summary>
+        /// <param name="count">The amount of tickets that have been bought</param>
         public void Update(int count) {
             lblTicketCount.Text = count.ToString();
         }
 
+        /// <summary>
+        /// Empty because the class already has the RouteList object passed through to it.
+        /// </summary>
+        /// <param name="routes"></param>
         public void Update(List<Route> routes) {
 
         }
 
+        /// <summary>
+        /// When the station is changed in the combo box on the Routes panel it repopulates the list box with the
+        /// stations which this station has routes to and updates combo box for selecting an end station when creating
+        /// a route to not include the start station.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbSelectStation_SelectedIndexChanged(object sender, EventArgs e) {
             lblStartStationEntry.Text = cbSelectStation.SelectedItem.ToString();
             cbStations.SelectedIndex = cbSelectStation.SelectedIndex;
@@ -157,14 +191,33 @@ namespace ModifiedTicketingSystem {
             }
         }
 
+        /// <summary>
+        /// When the station is changed in the combo box on the Tickets tab it changes the selected station in the
+        /// combo box on the Routes tab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbStations_SelectedIndexChanged(object sender, EventArgs e) {
             cbSelectStation.SelectedIndex = cbStations.SelectedIndex;
         }
 
+        /// <summary>
+        /// Logs the Admin out then the form is closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AdminGUI_FormClosing(object sender, FormClosingEventArgs e) {
             _account = new Account().LogoutAdmin(_account);
         }
 
+        /// <summary>
+        /// Adds a route to the RouteList using the currently selected station, the selected end station and the
+        /// price that has been entered. It then repopulates the list box to include the new route and notifies
+        /// all the observers of the new route so that they can be used in the single journey ticket option on
+        /// the TokenMachineGUI.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnCreateRoute_Click(object sender, EventArgs e) {
             routes.AddRoute(new Route((Station)cbSelectStation.SelectedItem, (Station)cbEndStationEntry.SelectedItem, decimal.Parse(tbPriceEntry.Text)));
 

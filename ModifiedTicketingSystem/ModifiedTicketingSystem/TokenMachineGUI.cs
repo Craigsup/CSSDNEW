@@ -636,6 +636,11 @@ namespace ModifiedTicketingSystem {
             }
         }
 
+        /// <summary>
+        /// Updates the local list of routes based on the notification from the Subject RouteList
+        /// Then populates the end station combobox based on the new routes
+        /// </summary>
+        /// <param name="routes"></param>
         public void Update(List<Route> routes) {
             _routes.SetRoutes(routes);
             cbEndStation.Items.Clear();
@@ -649,6 +654,11 @@ namespace ModifiedTicketingSystem {
             }
         }
 
+        /// <summary>
+        /// The update function for integers is empty because the TokenMachineGUI doesn't hold a local copy of
+        /// how many tickets have been bought in total
+        /// </summary>
+        /// <param name="count"></param>
         public void Update(int count) {
         }
 
@@ -850,11 +860,6 @@ namespace ModifiedTicketingSystem {
         private void TokenMachineGUI_Load(object sender, EventArgs e) {
 
         }
-
-        //public Counter ISubject {
-        //    get { return counter; }
-        //    set { counter.Increment(); }
-        //}
     }
 }
 
