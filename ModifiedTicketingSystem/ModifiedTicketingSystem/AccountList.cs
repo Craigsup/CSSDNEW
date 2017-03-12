@@ -156,16 +156,18 @@ namespace ModifiedTicketingSystem {
         /// </summary>
         /// <param name="accountT">CustomerAccount to be updated</param>
         public void UpdateAccount(CustomerAccount accountT) {
-            var accs = ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
-            for (int i = 0; i < accs.Count; i++) {
-                if (accountT.GetId() == accs[i].GetAccountId()) {
-                    accs[i] = accountT;
-                    break;
+            if (File.Exists(@"Accounts.txt")) {
+                var accs = ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
+                for (int i = 0; i < accs.Count; i++) {
+                    if (accountT.GetId() == accs[i].GetAccountId()) {
+                        accs[i] = accountT;
+                        break;
+                    }
                 }
-            }
 
-            _listOfAccounts = accs;
-            SaveCustomerData();
+                _listOfAccounts = accs;
+                SaveCustomerData();
+            }
         }
 
         /// <summary>

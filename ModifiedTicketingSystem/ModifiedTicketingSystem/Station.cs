@@ -23,7 +23,11 @@ namespace ModifiedTicketingSystem {
 
         public Station(string Location) {
             _location = Location;
-            _validTicketList = ReadFromBinaryFile<List<Ticket>>(@_location + "_tickets.txt");
+            if (File.Exists(@_location + "_tickets.txt")) {
+                _validTicketList = ReadFromBinaryFile<List<Ticket>>(@_location + "_tickets.txt");
+            } else {
+                _validTicketList = new List<Ticket>();
+            }
         }
 
         public DepartureList GetDepartures() {
