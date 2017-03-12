@@ -134,6 +134,11 @@ namespace ModifiedTicketingSystem {
             return -1;
         }
 
+        /// <summary>
+        /// This function logs out a user from the system.
+        /// </summary>
+        /// <param name="accountId">The user ID to log out.</param>
+        /// <returns>returns -1 to show the user has been logged out. </returns>
         public int LogoutAdmin(int accountId) {
             var accs = ReadFromBinaryFile<List<AdminAccount>>(@"AdminAccounts.txt");
             foreach (var account in accs) {
