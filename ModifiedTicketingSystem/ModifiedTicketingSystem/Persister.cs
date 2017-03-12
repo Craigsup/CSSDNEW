@@ -3,7 +3,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ModifiedTicketingSystem {
     /// <summary>
-    /// 
+    /// Class to contain functions to persist and retrieve persisted data.
+    /// Used many times throughout the applications.
     /// </summary>
     public class Persister {
         /// <summary>
