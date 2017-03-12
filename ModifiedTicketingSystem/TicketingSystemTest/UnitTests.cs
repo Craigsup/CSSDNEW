@@ -48,10 +48,8 @@ namespace TicketingSystemTest {
             Station endStation = new Station(new DepartureList(), "Sheffield");
             RouteList startStationRouteList = new RouteList();
             startStationRouteList.AddRoute(new Route(startStation, endStation, 2.70m));
-            Scanner scannerA = new Scanner(endStation, false, new AccountList(new List<CustomerAccount> {bobAccount}),
-                startStationRouteList);
+            Scanner scannerA = new Scanner(endStation, false, new AccountList(new List<CustomerAccount> {bobAccount}), startStationRouteList);
             bobAccount.SetStartPoint(startStation);
-
 
             Assert.IsTrue(scannerA.AddScannedCard(bobSmartCard));
         }
