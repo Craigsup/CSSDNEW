@@ -83,7 +83,7 @@ namespace ModifiedTicketingSystem {
             this.lblError.Size = new System.Drawing.Size(0, 17);
             this.lblError.TabIndex = 4;
             // 
-            // BarrierGUI
+            // ScannerFeedbackGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -93,8 +93,8 @@ namespace ModifiedTicketingSystem {
             this.Controls.Add(this.tbTicketId);
             this.Controls.Add(this.lblTicketId);
             this.Controls.Add(this.lblTitle);
-            this.Name = "BarrierGUI";
-            this.Text = "BarrierGUI";
+            this.Name = "ScannerFeedbackGUI";
+            this.Text = "Scanner Simulator";
             this.ResumeLayout(false);
             this.PerformLayout();
 

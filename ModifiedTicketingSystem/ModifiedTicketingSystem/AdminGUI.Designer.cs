@@ -389,7 +389,7 @@
             this.Controls.Add(this.lblUsername);
             this.Controls.Add(this.lblLoginDetails);
             this.Name = "AdminGUI";
-            this.Text = "AdminGUI";
+            this.Text = "Ticketing Machine Administration";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AdminGUI_FormClosing);
             this.Load += new System.EventHandler(this.AdminGUI_Load);
             this.tcAdminViews.ResumeLayout(false);

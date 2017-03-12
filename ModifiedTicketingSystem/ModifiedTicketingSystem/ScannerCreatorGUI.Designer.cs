@@ -131,7 +131,7 @@ namespace ModifiedTicketingSystem {
             this.Controls.Add(this.lblStation);
             this.Controls.Add(this.lblTitle);
             this.Name = "ScannerCreatorGUI";
-            this.Text = "BarrierGUI";
+            this.Text = "Barrier Simulator";
             ((System.ComponentModel.ISupportInitialize)(this.scannerCreatorGUIBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

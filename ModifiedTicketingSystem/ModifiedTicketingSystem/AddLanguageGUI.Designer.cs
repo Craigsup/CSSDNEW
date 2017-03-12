@@ -64,7 +64,7 @@
             this.Controls.Add(this.tbTranslateText);
             this.Controls.Add(this.lblTranslateText);
             this.Name = "AddLanguageGUI";
-            this.Text = "AddLanguageGUI";
+            this.Text = "Add a New Language";
             this.ResumeLayout(false);
             this.PerformLayout();
 

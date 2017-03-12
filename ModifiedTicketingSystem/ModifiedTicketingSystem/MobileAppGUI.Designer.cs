@@ -606,7 +606,7 @@ namespace ModifiedTicketingSystem {
             this.Controls.Add(this.btnPaymentOptions);
             this.Controls.Add(this.btnTopUp);
             this.Name = "MobileAppGUI";
-            this.Text = "MobileAppGUI";
+            this.Text = "Mobile Application";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MobileAppGUI_FormClosing);
             this.Load += new System.EventHandler(this.MobileAppGUI_Load);
             this.ResumeLayout(false);

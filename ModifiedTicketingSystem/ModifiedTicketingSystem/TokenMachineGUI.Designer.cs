@@ -493,7 +493,7 @@ namespace ModifiedTicketingSystem {
             this.DoubleBuffered = true;
             this.Name = "TokenMachineGUI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "TokenMachineGUI";
+            this.Text = "Ticketing Machine";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TokenMachineGUI_FormClosing);
             this.Load += new System.EventHandler(this.TokenMachineGUI_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nudTimedPass)).EndInit();
