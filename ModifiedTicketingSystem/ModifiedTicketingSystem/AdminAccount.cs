@@ -40,7 +40,7 @@ namespace ModifiedTicketingSystem {
         }
 
         public T GetXByAccountId<T>(int accountId, string x) {
-            var accs = ReadFromBinaryFile<List<AdminAccount>>(@"AdminAccounts.txt");
+            var accs = Persister.ReadFromBinaryFile<List<AdminAccount>>(@"AdminAccounts.txt");
             foreach (var account in accs) {
                 if (accountId == account._accountId) {
                     switch (x) {

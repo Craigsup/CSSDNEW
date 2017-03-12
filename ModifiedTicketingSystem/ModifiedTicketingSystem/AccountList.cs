@@ -10,6 +10,7 @@ namespace ModifiedTicketingSystem {
     public class AccountList {
         private List<CustomerAccount> _listOfAccounts;
         private List<AdminAccount> _listOfAdminAccounts;
+        private Persister _persister = new Persister();
 
         /// <summary>
         /// Constructor that creates a new list of customer accounts
@@ -86,52 +87,25 @@ namespace ModifiedTicketingSystem {
         }
 
         /// <summary>
-        /// A method that calls the private WriteToBinaryFile method with the required parameters
+        /// A method that calls the private Persister.WriteToBinaryFile method with the required parameters
         /// </summary>
         public void SaveCustomerData() {
-            WriteToBinaryFile(@"Accounts.txt", _listOfAccounts, false);
+            Persister.WriteToBinaryFile(@"Accounts.txt", _listOfAccounts, false);
         }
 
         public void SaveAdminData() {
-            WriteToBinaryFile(@"AdminAccounts.txt", _listOfAdminAccounts, false);
+            Persister.WriteToBinaryFile(@"AdminAccounts.txt", _listOfAdminAccounts, false);
         }
 
         /// <summary>
-        /// A method that calls the private ReadFromBinaryFile method with the required parameters
+        /// A method that calls the private Persister.ReadFromBinaryFile method with the required parameters
         /// </summary>
         public void LoadCustomerData() {
-            _listOfAccounts = ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
+            _listOfAccounts = Persister.ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
         }
 
         public void LoadAdminData() {
-            _listOfAdminAccounts = ReadFromBinaryFile<List<AdminAccount>>(@"AdminAccounts.txt");
-        }
-
-        /// <summary>
-        /// This method takes the List of CustomerAccount object and binary serializes it, allowing the persistence of data.
-        /// </summary>
-        /// <param name="filePath">This is the file name/output directory.</param>
-        /// <param name="objectToWrite">This is the object that gets serialized. Can be of any type.</param>
-        /// <param name="append">This flags whether to append the object to the end of the file (if it exists already)</param>
-        /// <typeparam name="T">This is the type of T</typeparam>
-        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false) {
-            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create)) {
-                var binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(stream, objectToWrite);
-            }
-        }
-
-        /// <summary>
-        /// This method reads in the object that has been serialized and returns it to the calling statement.
-        /// </summary>
-        /// <param name="filePath">A string containing the file path of which file to load.</param>
-        /// <typeparam name="T">The return type which the object should be cast to, in order to be returned.</typeparam>
-        /// <returns>(T)binaryFormatter.Deserialize(stream)</returns>
-        public static T ReadFromBinaryFile<T>(string filePath) {
-            using (Stream stream = File.Open(filePath, FileMode.Open)) {
-                var binaryFormatter = new BinaryFormatter();
-                return (T)binaryFormatter.Deserialize(stream);
-            }
+            _listOfAdminAccounts = Persister.ReadFromBinaryFile<List<AdminAccount>>(@"AdminAccounts.txt");
         }
 
         /// <summary>
@@ -140,7 +114,7 @@ namespace ModifiedTicketingSystem {
         /// <param name="accountId">The account ID of which account to top up.</param>
         /// <param name="topup">How much the user wishes to top up.</param>
         public void UpdateData(int accountId, decimal topup) {
-            var accs = ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
+            var accs = Persister.ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
             foreach (var account in accs) {
                 if (accountId == account.GetAccountId()) {
                     account.UpdateBalance(topup);
@@ -152,12 +126,13 @@ namespace ModifiedTicketingSystem {
         }
 
         /// <summary>
-        /// Updates a single account in the listOfAccounts and then saves ghe listOfAccounts to file
+        /// Updates a single account in the listOfAccounts and then saves the listOfAccounts to file
+        /// Used in various locations to allow easy updating of any attribute of an account.
         /// </summary>
         /// <param name="accountT">CustomerAccount to be updated</param>
         public void UpdateAccount(CustomerAccount accountT) {
             if (File.Exists(@"Accounts.txt")) {
-                var accs = ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
+                var accs = Persister.ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
                 for (int i = 0; i < accs.Count; i++) {
                     if (accountT.GetId() == accs[i].GetAccountId()) {
                         accs[i] = accountT;

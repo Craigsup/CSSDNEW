@@ -52,23 +52,23 @@ namespace ModifiedTicketingSystem {
 
         public void SerialiseTickets() {
             InitialiseTicketId();
-            var tickets = ReadFromBinaryFile<List<Ticket>>(@"Tickets.txt");
+            var tickets = Persister.ReadFromBinaryFile<List<Ticket>>(@"Tickets.txt");
             tickets.Add(this);
-            WriteToBinaryFile(@"Tickets.txt", tickets, false);
+            Persister.WriteToBinaryFile(@"Tickets.txt", tickets, false);
         }
 
         public void InitialiseTicketId() {
-            WriteToBinaryFile(@"LastTicket.txt", this, false);
+            Persister.WriteToBinaryFile(@"LastTicket.txt", this, false);
         }
 
         public void InitialiseTickets() {
             List<Ticket> ticketList = new List<Ticket>();
             ticketList.Add(this);
-            WriteToBinaryFile(@"Tickets.txt", ticketList, false);
+            Persister.WriteToBinaryFile(@"Tickets.txt", ticketList, false);
         }
 
         public int GetNewTicketId() {
-            var ticket = ReadFromBinaryFile<Ticket>(@"LastTicket.txt");
+            var ticket = Persister.ReadFromBinaryFile<Ticket>(@"LastTicket.txt");
             return ticket.TicketId() + 1;
         }
 
@@ -130,33 +130,6 @@ namespace ModifiedTicketingSystem {
         public DateTime GetExpiryDate() {
             //return DateTime.Now;
             return _expiryDate;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns>(T)binaryFormatter.Deserialize(stream)</returns>
-        public static T ReadFromBinaryFile<T>(string filePath) {
-            using (Stream stream = File.Open(filePath, FileMode.Open)) {
-                var binaryFormatter = new BinaryFormatter();
-                return (T)binaryFormatter.Deserialize(stream);
-            }
-        }
-
-        /// <summary>
-        /// This method takes the List of CustomerAccount object and binary serializes it, allowing the persistence of data.
-        /// </summary>
-        /// <param name="filePath">This is the file name/output directory.</param>
-        /// <param name="objectToWrite">This is the object that gets serialized. Can be of any type.</param>
-        /// <param name="append">This flags whether to append the object to the end of the file (if it exists already)</param>
-        /// <typeparam name="T">This is the type of T</typeparam>
-        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false) {
-            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create)) {
-                var binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(stream, objectToWrite);
-            }
         }
     }
 }

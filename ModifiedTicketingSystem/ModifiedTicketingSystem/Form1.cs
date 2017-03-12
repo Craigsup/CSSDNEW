@@ -52,14 +52,6 @@ namespace ModifiedTicketingSystem {
 
         }
 
-
-        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false) {
-            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create)) {
-                var binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(stream, objectToWrite);
-            }
-        }
-
         private void Setup() {
             CustomerSetup();
             InitialStationLoad();
@@ -94,11 +86,11 @@ namespace ModifiedTicketingSystem {
             foreach (var singleLine in stations) {
                 stationsj.Add(new Station(new DepartureList(), singleLine));
             }
-            WriteToBinaryFile<List<Station>>(@"Stations.txt", stationsj, false);
+            Persister.WriteToBinaryFile<List<Station>>(@"Stations.txt", stationsj, false);
         }
 
         private StationList LoadStations(StationList _stations) {
-            List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            List<Station> stationsTemp = Persister.ReadFromBinaryFile<List<Station>>(@"Stations.txt");
             _stations = new StationList(stationsTemp);
             return _stations;
         }
@@ -111,7 +103,7 @@ namespace ModifiedTicketingSystem {
             ticket.InitialiseTicketId();
             ticket.InitialiseTickets();
 
-            List<Station> stationList = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            List<Station> stationList = Persister.ReadFromBinaryFile<List<Station>>(@"Stations.txt");
             foreach (var station in stationList) {
                 station.InitialiseTicketList(ticket);
             }
@@ -147,14 +139,5 @@ namespace ModifiedTicketingSystem {
             var gui = new AddLanguageGUI();
             gui.ShowDialog();
         }
-
-        public static T ReadFromBinaryFile<T>(string filePath) {
-            using (Stream stream = File.Open(filePath, FileMode.Open)) {
-                var binaryFormatter = new BinaryFormatter();
-                return (T)binaryFormatter.Deserialize(stream);
-            }
-        }
-
-
     }
 }

@@ -84,7 +84,7 @@ namespace ModifiedTicketingSystem {
         /// <returns>If successful, the accountId, else -1 to signal a failure.</returns>
         public int VerifyLogin(string username, string password) {
             if (username.StartsWith("admin")) {
-                var accs = ReadFromBinaryFile<List<AdminAccount>>(@"AdminAccounts.txt");
+                var accs = Persister.ReadFromBinaryFile<List<AdminAccount>>(@"AdminAccounts.txt");
                 foreach (var account in accs) {
                     if (account._username == username && account._password == password) {
                         if (account._loginStatus) {
@@ -99,7 +99,7 @@ namespace ModifiedTicketingSystem {
                 return -1;
             }
             else {
-                var accs = ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
+                var accs = Persister.ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
                 foreach (var account in accs) {
                     if (account._username == username && account._password == password) {
                         if (account._loginStatus) {
@@ -121,7 +121,7 @@ namespace ModifiedTicketingSystem {
         /// <param name="accountId">AccountID of the account to be logged out</param>
         /// <returns>-1 for the gui to sets it's current account ID to</returns>
         public int Logout(int accountId) {
-            var accs = ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
+            var accs = Persister.ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
             foreach (var account in accs) {
                 if (account._accountId == accountId) {
                     account._loginStatus = false;
@@ -140,7 +140,7 @@ namespace ModifiedTicketingSystem {
         /// <param name="accountId">The user ID to log out.</param>
         /// <returns>returns -1 to show the user has been logged out. </returns>
         public int LogoutAdmin(int accountId) {
-            var accs = ReadFromBinaryFile<List<AdminAccount>>(@"AdminAccounts.txt");
+            var accs = Persister.ReadFromBinaryFile<List<AdminAccount>>(@"AdminAccounts.txt");
             foreach (var account in accs) {
                 if (account._accountId == accountId) {
                     account._loginStatus = false;
@@ -151,19 +151,6 @@ namespace ModifiedTicketingSystem {
             }
 
             return -1;
-        }
-
-        /// <summary>
-        /// Deserialises data that is saved in a file.
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns>(T)binaryFormatter.Deserialize(stream)</returns>
-        public static T ReadFromBinaryFile<T>(string filePath) {
-            using (Stream stream = File.Open(filePath, FileMode.Open)) {
-                var binaryFormatter = new BinaryFormatter();
-                return (T)binaryFormatter.Deserialize(stream);
-            }
         }
     }
 }

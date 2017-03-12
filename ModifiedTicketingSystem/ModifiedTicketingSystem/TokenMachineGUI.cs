@@ -37,7 +37,7 @@ namespace ModifiedTicketingSystem {
             //SetupFile();
             dayPassPrice = decimal.Round((decimal)rand.NextDouble(), 2) * 10;
             _machine = new TokenMachine(dayPassPrice);
-            //var hold = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            //var hold = Persister.ReadFromBinaryFile<List<Station>>(@"Stations.txt");
             //cbStartStation.DataSource = hold;
             //cbStartStation.Text = "location";
 
@@ -59,15 +59,8 @@ namespace ModifiedTicketingSystem {
         }
 
         private void LoadStations() {
-            List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            List<Station> stationsTemp = Persister.ReadFromBinaryFile<List<Station>>(@"Stations.txt");
             _stations = new StationList(stationsTemp);
-        }
-
-        public static T ReadFromBinaryFile<T>(string filePath) {
-            using (Stream stream = File.Open(filePath, FileMode.Open)) {
-                var binaryFormatter = new BinaryFormatter();
-                return (T)binaryFormatter.Deserialize(stream);
-            }
         }
 
         private void DisplayLangList() {
@@ -180,6 +173,9 @@ namespace ModifiedTicketingSystem {
             ToggleJourneyOptions(true);
         }
 
+        /// <summary>
+        /// Not required here. Done in TokenMachine.cs
+        /// </summary>
         private void InsertMoney() {
 
         }
@@ -372,6 +368,10 @@ namespace ModifiedTicketingSystem {
             }
         }
 
+        /// <summary>
+        /// This method is called to display when the token machine is printing tickets/refunding money etc.
+        /// </summary>
+        /// <param name="result">The result from the Payment method to check whether a cash refund is required.</param>
         private async void FinalMessage(DialogResult result = DialogResult.OK) {
             if (_actionStack.Count > 0 && _actionStack.Peek() != "FinalMessage") {
                 _actionStack.Push("FinalMessage");
@@ -557,6 +557,12 @@ namespace ModifiedTicketingSystem {
             }
         }
 
+        /// <summary>
+        /// Listener on the Combobox for the start station of a single ticket.
+        /// Alters the textbox for journey price based on what journey was selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbStartStation_SelectedIndexChanged(object sender, EventArgs e) {
             _startStation = cbStartStation.SelectedItem.ToString();
             cbEndStation.Items.Clear();
@@ -576,6 +582,12 @@ namespace ModifiedTicketingSystem {
             }
         }
 
+        /// <summary>
+        /// Listener on the Combobox for the end station of a single ticket.
+        /// Alters the textbox for journey price based on what journey was selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbEndStation_SelectedIndexChanged(object sender, EventArgs e) {
             //Update price of ticket
             if ((cbStartStation.SelectedItem != null) && (cbEndStation.SelectedItem != null)) {
@@ -605,6 +617,13 @@ namespace ModifiedTicketingSystem {
             }
         }
 
+        /// <summary>
+        /// Receives user log in details. Then calls an account function which verifies the entered details.
+        /// If the account details are wrong / don't exist, returns -1. Shows error message.
+        /// If the account is already logged in, it returns -2. Shows Error: logged in already message.
+        /// </summary>
+        /// <param name="username">Username the user has entered.</param>
+        /// <param name="password">Password the user has entered.</param>
         private void LoginToAccount(string username, string password) {
             _account = new CustomerAccount().VerifyLogin(username, password);
             if (_account > -1) {
@@ -620,20 +639,6 @@ namespace ModifiedTicketingSystem {
                 MessageBox.Show(this, "Error");
             }
 
-        }
-
-        /// <summary>
-        /// This method takes the List of CustomerAccount object and binary serializes it, allowing the persistence of data.
-        /// </summary>
-        /// <param name="filePath">This is the file name/output directory.</param>
-        /// <param name="objectToWrite">This is the object that gets serialized. Can be of any type.</param>
-        /// <param name="append">This flags whether to append the object to the end of the file (if it exists already)</param>
-        /// <typeparam name="T">This is the type of T</typeparam>
-        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false) {
-            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create)) {
-                var binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(stream, objectToWrite);
-            }
         }
 
         /// <summary>
@@ -663,6 +668,10 @@ namespace ModifiedTicketingSystem {
         }
 
 
+        /// <summary>
+        /// Function that sets up the GUI based on the logged in user.
+        /// Dynamically creates a picturebox with the user's profile picture, plus a label with their username and balance.
+        /// </summary>
         private void ConfigureGuiForLogin() {
             PictureBox userPicture = new PictureBox {
                 Location = new Point(Width - 150, 15),
@@ -693,6 +702,9 @@ namespace ModifiedTicketingSystem {
             ToggleLanguageScreen(true);
         }
 
+        /// <summary>
+        /// Hides all controls on the form.
+        /// </summary>
         private void HideAll() {
             foreach (var x in Controls.OfType<Button>()) {
                 x.Visible = false;
@@ -723,6 +735,10 @@ namespace ModifiedTicketingSystem {
             }
         }
 
+        /// <summary>
+        /// Used to clear any control on the form.
+        /// Useful when resetting back to main screen to ensure the next user has a blank canvas and no previous details are kept.
+        /// </summary>
         private void ResetControls() {
             foreach (var x in Controls.OfType<Button>()) {
                 x.Text = "";
@@ -765,6 +781,12 @@ namespace ModifiedTicketingSystem {
             _machine = new TokenMachine(dayPassPrice);
         }
 
+        /// <summary>
+        /// When the back button is clicked, the stack containing history of page clicks is popped.
+        /// Based on that is which controls will be loaded.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pbBack_Click(object sender, EventArgs e) {
             // Pop first to remove the page we are currently on. Then the next Pop is the actual page we want to return to.
             _actionStack.Pop();

@@ -92,7 +92,7 @@ namespace ModifiedTicketingSystem {
         /// <returns>depending on the x parameter: balance, cardId, fullName, username or the payment digits </returns>
         public T GetXByAccountId<T>(int accountId, string x)
         {
-            var accs = ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
+            var accs = Persister.ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt");
             foreach (var account in accs)
             {
                 if (accountId == account._accountId)

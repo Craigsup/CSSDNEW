@@ -13,7 +13,6 @@ namespace TicketingSystemTest {
 
             accList.AddCustomerAccount(bobAccount);
             Assert.AreEqual(accList.GetAccountById(bobAccount.GetAccountId()), bobAccount);
-            //Assert.AreEqual<Customer(accList.GetAccountById(bobAccount.GetAccountId()) == bobAccount);
         }
 
         [TestMethod]

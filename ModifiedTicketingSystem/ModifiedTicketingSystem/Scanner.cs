@@ -23,7 +23,7 @@ namespace ModifiedTicketingSystem
         public Scanner(Station location, bool entry) {
             _location = location;
             _entry = entry;
-            _accounts = new AccountList(ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt"));
+            _accounts = new AccountList(Persister.ReadFromBinaryFile<List<CustomerAccount>>(@"Accounts.txt"));
             _aBarrier = new Barrier();
             _routeList = new RouteList();
 
@@ -153,7 +153,7 @@ namespace ModifiedTicketingSystem
                 price *= 1.3m;
             }
 
-            // PAYMENT SHIT GOES HERE.
+            // PAYMENT GOES HERE.
             /*if (_account.GetTotalPaidByDate(GetScannedTime()) > _dayPassPrice) {
                 _account.SetFreeTravel(true);
             }
@@ -216,13 +216,6 @@ namespace ModifiedTicketingSystem
 
         public Station GetStation() {
             return _location;
-        }
-        
-        public static T ReadFromBinaryFile<T>(string filePath) {
-            using (Stream stream = File.Open(filePath, FileMode.Open)) {
-                var binaryFormatter = new BinaryFormatter();
-                return (T)binaryFormatter.Deserialize(stream);
-            }
         }
     }
 }

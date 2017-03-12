@@ -51,21 +51,8 @@ namespace ModifiedTicketingSystem {
         /// Only happens during initialization
         /// </summary>
         private void LoadStations() {
-            List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            List<Station> stationsTemp = Persister.ReadFromBinaryFile<List<Station>>(@"Stations.txt");
             _stations = new StationList(stationsTemp);
-        }
-
-        /// <summary>
-        /// Reads in serialized data from a file
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static T ReadFromBinaryFile<T>(string filePath) {
-            using (Stream stream = File.Open(filePath, FileMode.Open)) {
-                var binaryFormatter = new BinaryFormatter();
-                return (T)binaryFormatter.Deserialize(stream);
-            }
         }
 
         /// <summary>
