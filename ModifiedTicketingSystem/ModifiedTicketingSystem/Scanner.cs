@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
-namespace ModifiedTicketingSystem
-{
+namespace ModifiedTicketingSystem {
     public class Scanner {
         protected SmartCard _aSmartCard;
         protected bool _entry;

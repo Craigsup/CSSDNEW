@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModifiedTicketingSystem;
-using System.Windows;
-using System.Reflection;
 
 namespace TicketingSystemTest {
     [TestClass]
