@@ -11,6 +11,13 @@ namespace ModifiedTicketingSystem {
             _scanner = scanner;
             lblError.ForeColor = Color.Red;
             lblError.Text = "Barrier Closed";
+            lblStation.Text = scanner.GetStation().GetLocation();
+            string scannerType;
+            if (scanner.GetScannerType() == true) {
+                lblScannerType.Text = "Entry";
+            } else {
+                lblScannerType.Text = "Exit";
+            }
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
