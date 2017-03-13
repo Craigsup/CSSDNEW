@@ -57,10 +57,10 @@ namespace ModifiedTicketingSystem {
         }
 
         /// <summary>
-        /// 
+        /// This method is called when a SmartCard is scanned at a scanner.
         /// </summary>
-        /// <param name="x"></param>
-        /// <returns>true or false</returns>
+        /// <param name="x">Card being scanned at the scanner</param>
+        /// <returns>True if the user can go past the scanner, false otherwise</returns>
         public bool AddScannedCard(SmartCard x) {
             _scanTime = DateTime.Now;
             SetActiveAccount(_accounts.GetAccountByCardId(x.GetCardId()));
@@ -188,9 +188,12 @@ namespace ModifiedTicketingSystem {
         }
 
         /// <summary>
-        /// 
+        /// Finds the route that the customer has travelled along, checks if it is currently peak time,
+        /// checks if the customer currently has free travel and then checks if the customer qualifies for free travel after this journey.
+        /// It then chekcs if they have enough balance on their account, subtracts the cost of this journey and then
+        /// resets their start and end points for their next journey
         /// </summary>
-        /// <returns>true or false</returns>
+        /// <returns>True if the customer has sucessfully paid for the journey in some way, false otherwise</returns>
         public bool MakePayment() {
             var start = _account.GetStartPoint();
             var end = _account.GetEndPoint();
@@ -200,21 +203,6 @@ namespace ModifiedTicketingSystem {
             if (start.GetDepartures().GetDeparture(end, _aSmartCard.GetScannedTime()).IsPeakDeparture()) {
                 price *= 1.3m;
             }
-
-            // PAYMENT GOES HERE.
-            /*if (_account.GetTotalPaidByDate(GetScannedTime()) > _dayPassPrice) {
-                _account.SetFreeTravel(true);
-            }
-            else {
-                if (_account.GetBalance() >= price) {
-                    _account.UpdateBalance(-price);
-                    _account.SetStartPoint(null);
-                    _account.SetEndPoint(null);
-                }
-                else {
-                    
-                }
-            }*/
 
             if (_account.GetFreeTravel()) {
                 return true;
@@ -231,15 +219,6 @@ namespace ModifiedTicketingSystem {
             } else {
                 return false;
             }
-
-            /*PaymentList payList = new PaymentList();
-            Payment payment1 = new Payment(price, 0);
-            payList.AddPayment(payment1);
-            payList.AddPayment(new Payment(payList.GetPaymentByIndex(0).GetBalance()-price, price));
-
-            var temp = payList;*/
-            // Basing _scanTime as time they scanned the exit 
-            //hold departure time in smart card so that the scanner can know if the journey was a peak time journey.
         }
 
         /// <summary>

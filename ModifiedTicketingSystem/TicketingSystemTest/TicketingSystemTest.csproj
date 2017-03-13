@@ -57,6 +57,7 @@
     <Compile Include="CraigUnitTest.cs" />
     <Compile Include="SamUnitTest.cs" />
     <Compile Include="UnitTests.cs" />
+	<Compile Include="GarethUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModifiedTicketingSystem\ModifiedTicketingSystem.csproj">

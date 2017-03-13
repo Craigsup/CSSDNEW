@@ -37,6 +37,10 @@ namespace ModifiedTicketingSystem {
             ListOfLanguages.Add(lang);
         }
 
+        /// <summary>
+        /// Returns LanguageList as a string for unit test comparison
+        /// </summary>
+        /// <returns>ListOfLanguages as a string</returns>
         public override string ToString()
         {
             return ListOfLanguages.ToString();

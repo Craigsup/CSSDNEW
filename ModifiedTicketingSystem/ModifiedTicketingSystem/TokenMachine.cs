@@ -106,7 +106,7 @@ namespace ModifiedTicketingSystem {
         /// <summary>
         /// Loads all the .language files in the "files" array and creates a LanguageList from them
         /// </summary>
-        /// <param name="files">Arrya of locations of .language files</param>
+        /// <param name="files">Array of locations of .language files</param>
         /// <returns>LanguageList created from all .language files</returns>
         public LanguageList LoadLanguages(string[] files)
         {

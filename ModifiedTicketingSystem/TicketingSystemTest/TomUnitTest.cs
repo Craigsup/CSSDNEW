@@ -9,6 +9,9 @@ namespace TicketingSystemTest
     [TestClass]
     public class TomUnitTest
     {
+        /// <summary>
+        /// Test method for loading languages from files.
+        /// </summary>
         [TestMethod]
         [DeploymentItem(@"Languages\"+"1english.language")]
         public void LoadLanguageTest()
