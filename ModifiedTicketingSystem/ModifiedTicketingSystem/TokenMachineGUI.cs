@@ -417,30 +417,19 @@ namespace ModifiedTicketingSystem {
         /*
          * This is our own functions - not defined in the class diagram
          */
+         /// <summary>
+         /// Reads all language files in the Languages folder and creates a Language object from them
+         /// </summary>
         private void SetupLanguages() {
+            //creates string of path for folder of languages
+            string path = @"Languages\";
+
             _langList = new LanguageList();
-
-            string path = Path.Combine(Environment.CurrentDirectory, @"Languages\");
+            //gets path of all language files
             string[] files = Directory.GetFiles(path, "*.language");
-            for (int i = 0; i < files.Length; i++) {
 
-                string[] languageTemp = new string[20];
-
-                languageTemp = File.ReadAllLines(files[i]);
-
-                _langList.AddLanguage(new Language(languageTemp[0],
-                new List<string> { languageTemp[1], languageTemp[2] },
-                new List<string>(),
-                new List<string> { languageTemp[3], languageTemp[4] },
-                new List<string>(),
-                languageTemp[5],
-                new List<string> { languageTemp[6], languageTemp[7], languageTemp[8], languageTemp[9] },
-                new List<string> { languageTemp[10] },
-                languageTemp[11],
-                new List<string> { languageTemp[12], languageTemp[13], languageTemp[14] },
-                new List<string> { languageTemp[15], languageTemp[16], languageTemp[17] },
-                new List<string> { languageTemp[18], languageTemp[19] }));
-            }
+            //LoadLanguages returns a LanguageList created from all the .language files
+            _langList = _machine.LoadLanguages(files);
         }
 
 
