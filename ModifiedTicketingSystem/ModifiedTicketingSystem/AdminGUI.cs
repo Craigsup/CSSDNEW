@@ -1,7 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using ModifiedTicketingSystem.Properties;
 
 namespace ModifiedTicketingSystem {
     public partial class AdminGUI : Form, IObserver {
@@ -43,8 +51,21 @@ namespace ModifiedTicketingSystem {
         /// Only happens during initialization
         /// </summary>
         private void LoadStations() {
-            List<Station> stationsTemp = Persister.ReadFromBinaryFile<List<Station>>(@"Stations.txt");
+            List<Station> stationsTemp = ReadFromBinaryFile<List<Station>>(@"Stations.txt");
             _stations = new StationList(stationsTemp);
+        }
+
+        /// <summary>
+        /// Reads in serialized data from a file
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static T ReadFromBinaryFile<T>(string filePath) {
+            using (Stream stream = File.Open(filePath, FileMode.Open)) {
+                var binaryFormatter = new BinaryFormatter();
+                return (T)binaryFormatter.Deserialize(stream);
+            }
         }
 
         /// <summary>
@@ -165,7 +186,7 @@ namespace ModifiedTicketingSystem {
             lbRoutes.Items.Clear();
             foreach (var route in routes.GetAllRoutes()) {
                 if (route.GetStartPoint().ToString() == cbSelectStation.SelectedItem.ToString()) {
-                    lbRoutes.Items.Add(route.GetEndPoint().ToString());
+                    lbRoutes.Items.Add(route.GetEndPoint());
                 }
             }
         }
@@ -203,7 +224,22 @@ namespace ModifiedTicketingSystem {
             lbRoutes.Items.Clear();
             foreach (var route in routes.GetAllRoutes()) {
                 if(route.GetStartPoint().ToString() == cbSelectStation.SelectedItem.ToString()) {
-                    lbRoutes.Items.Add(route.GetEndPoint().ToString());
+                    lbRoutes.Items.Add(route.GetEndPoint());
+                }
+            }
+            routes.NotifyObservers();
+        }
+
+        private void lbRoutes_SelectedIndexChanged(object sender, EventArgs e) {
+            lblRoutePrice.Text = (routes.GetRouteByStations((Station)cbSelectStation.SelectedItem, ((Station)lbRoutes.SelectedItem))).GetPrice().ToString();
+        }
+
+        private void btnDeleteRoute_Click(object sender, EventArgs e) {
+            routes.DeleteRoute(routes.GetRouteByStations((Station)cbSelectStation.SelectedItem, ((Station)lbRoutes.SelectedItem)));
+            lbRoutes.Items.Clear();
+            foreach (var route in routes.GetAllRoutes()) {
+                if (route.GetStartPoint().ToString() == cbSelectStation.SelectedItem.ToString()) {
+                    lbRoutes.Items.Add(route.GetEndPoint());
                 }
             }
             routes.NotifyObservers();

@@ -38,6 +38,17 @@ namespace ModifiedTicketingSystem {
         }
 
         /// <summary>
+        /// If the list of routes exists and contains at least one item then route 'x' is removed from the list.
+        /// </summary>
+        /// <param name="x"></param>
+        public void DeleteRoute(Route x) {
+            if ((_listOfRoutes != null) && (_listOfRoutes.Count > 0)) {
+                _listOfRoutes.Remove(x);
+                NotifyObservers();
+            }
+        }
+
+        /// <summary>
         /// Finds the first route in the list which starts with station 'x' and ends with station 'y'. 
         /// </summary>
         /// <param name="x"></param>

@@ -41,6 +41,9 @@
             this.lblTicketCount = new System.Windows.Forms.Label();
             this.lblTickets = new System.Windows.Forms.Label();
             this.tabRoutes = new System.Windows.Forms.TabPage();
+            this.lblCurrencySymbol = new System.Windows.Forms.Label();
+            this.lblRoutePrice = new System.Windows.Forms.Label();
+            this.lblRoutePriceTitle = new System.Windows.Forms.Label();
             this.cbEndStationEntry = new System.Windows.Forms.ComboBox();
             this.lblStartStationEntry = new System.Windows.Forms.Label();
             this.tbPriceEntry = new System.Windows.Forms.TextBox();
@@ -53,6 +56,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbSelectStation = new System.Windows.Forms.ComboBox();
             this.lblRoutes = new System.Windows.Forms.Label();
+            this.btnDeleteRoute = new System.Windows.Forms.Button();
             this.tcAdminViews.SuspendLayout();
             this.tabTickets.SuspendLayout();
             this.tabRoutes.SuspendLayout();
@@ -243,6 +247,10 @@
             // 
             // tabRoutes
             // 
+            this.tabRoutes.Controls.Add(this.btnDeleteRoute);
+            this.tabRoutes.Controls.Add(this.lblCurrencySymbol);
+            this.tabRoutes.Controls.Add(this.lblRoutePrice);
+            this.tabRoutes.Controls.Add(this.lblRoutePriceTitle);
             this.tabRoutes.Controls.Add(this.cbEndStationEntry);
             this.tabRoutes.Controls.Add(this.lblStartStationEntry);
             this.tabRoutes.Controls.Add(this.tbPriceEntry);
@@ -262,6 +270,35 @@
             this.tabRoutes.TabIndex = 1;
             this.tabRoutes.Text = "Routes";
             this.tabRoutes.UseVisualStyleBackColor = true;
+            // 
+            // lblCurrencySymbol
+            // 
+            this.lblCurrencySymbol.AutoSize = true;
+            this.lblCurrencySymbol.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lblCurrencySymbol.Location = new System.Drawing.Point(145, 298);
+            this.lblCurrencySymbol.Name = "lblCurrencySymbol";
+            this.lblCurrencySymbol.Size = new System.Drawing.Size(18, 20);
+            this.lblCurrencySymbol.TabIndex = 17;
+            this.lblCurrencySymbol.Text = "£";
+            // 
+            // lblRoutePrice
+            // 
+            this.lblRoutePrice.AutoSize = true;
+            this.lblRoutePrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lblRoutePrice.Location = new System.Drawing.Point(176, 298);
+            this.lblRoutePrice.Name = "lblRoutePrice";
+            this.lblRoutePrice.Size = new System.Drawing.Size(0, 20);
+            this.lblRoutePrice.TabIndex = 16;
+            // 
+            // lblRoutePriceTitle
+            // 
+            this.lblRoutePriceTitle.AutoSize = true;
+            this.lblRoutePriceTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lblRoutePriceTitle.Location = new System.Drawing.Point(16, 298);
+            this.lblRoutePriceTitle.Name = "lblRoutePriceTitle";
+            this.lblRoutePriceTitle.Size = new System.Drawing.Size(136, 20);
+            this.lblRoutePriceTitle.TabIndex = 15;
+            this.lblRoutePriceTitle.Text = "Price of this route:";
             // 
             // cbEndStationEntry
             // 
@@ -330,10 +367,11 @@
             // lbRoutes
             // 
             this.lbRoutes.FormattingEnabled = true;
-            this.lbRoutes.Location = new System.Drawing.Point(16, 129);
+            this.lbRoutes.Location = new System.Drawing.Point(16, 100);
             this.lbRoutes.Name = "lbRoutes";
-            this.lbRoutes.Size = new System.Drawing.Size(231, 225);
+            this.lbRoutes.Size = new System.Drawing.Size(231, 186);
             this.lbRoutes.TabIndex = 6;
+            this.lbRoutes.SelectedIndexChanged += new System.EventHandler(this.lbRoutes_SelectedIndexChanged);
             // 
             // lblCreateRoute
             // 
@@ -349,7 +387,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label1.Location = new System.Drawing.Point(12, 105);
+            this.label1.Location = new System.Drawing.Point(12, 76);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(235, 20);
             this.label1.TabIndex = 4;
@@ -376,6 +414,16 @@
             this.lblRoutes.TabIndex = 0;
             this.lblRoutes.Text = "Select a Station to show route options:";
             // 
+            // btnDeleteRoute
+            // 
+            this.btnDeleteRoute.Location = new System.Drawing.Point(16, 332);
+            this.btnDeleteRoute.Name = "btnDeleteRoute";
+            this.btnDeleteRoute.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteRoute.TabIndex = 18;
+            this.btnDeleteRoute.Text = "Delete";
+            this.btnDeleteRoute.UseVisualStyleBackColor = true;
+            this.btnDeleteRoute.Click += new System.EventHandler(this.btnDeleteRoute_Click);
+            // 
             // AdminGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -389,7 +437,7 @@
             this.Controls.Add(this.lblUsername);
             this.Controls.Add(this.lblLoginDetails);
             this.Name = "AdminGUI";
-            this.Text = "Ticketing Machine Administration";
+            this.Text = "AdminGUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AdminGUI_FormClosing);
             this.Load += new System.EventHandler(this.AdminGUI_Load);
             this.tcAdminViews.ResumeLayout(false);
@@ -434,5 +482,9 @@
         private System.Windows.Forms.Label lblEndStation;
         private System.Windows.Forms.Label lblStartStation;
         private System.Windows.Forms.ComboBox cbEndStationEntry;
+        private System.Windows.Forms.Label lblCurrencySymbol;
+        private System.Windows.Forms.Label lblRoutePrice;
+        private System.Windows.Forms.Label lblRoutePriceTitle;
+        private System.Windows.Forms.Button btnDeleteRoute;
     }
 }
